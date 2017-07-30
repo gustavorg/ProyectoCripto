@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Inicio</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <input type='text' id='mensaje' >
+    </body>
+
+        <script type="text/javascript" src='js/jquery-3.2.1.min.js' ></script>
+       <script>
+
+        $(document).ready(function(){
+             function sortear( abcArray ){
+                var newABC = abcArray.slice();
+                return newABC.sort( function(a, b){return 0.5 - Math.random()} );
+            }
+            var abecedario = 'abcdefghijklmnopqrstuvwxyz';
+            var abcArray = abecedario.split('');
+            var newABCArray = sortear(abcArray);
+           // var stringnewABCArray = newABCArray.toString();
+           // var regleta = stringnewABCArray.replace(/,/g , "");
+                alert(newABCArray);
+               // for(i=0; i<regleta.length; i++) //alert(i + ': ' + regleta.charAt(i));
+
+            var indicativo =['a','a'];
+            //alert(indicativo.substring(0,1) +'-'+  indicativo.substring(2,3));
+
+            // letra , 2 numeros  los cuales se restan si es + a la derecha y - a la izquierda
+            var convenio = ['a',2]; 
+            var texto = 'hola';
+            var cripto = '';
+            var movimientos = '';
+            var empiezacripto = false;
+            var posicion = 1;
+            var agregar = 0;
+            var saltos = 0;
+            var nuevoArreglo = [];
+            var index,index2 = -1;
+
+            while( nuevoArreglo.length < 27){
+                
+                index = ( posicion * saltos ) + agregar - 1;
+                
+                alert(index + ' - ' + index2);
+                if ( abcArray[index] == indicativo[index] && newABCArray[index2] == indicativo[index + 1] && !empiezacripto) {
+                    posicion = 0;
+                    empiezacripto = true;
+                    if(newABCArray[index2] == convenio[index]){
+                        nuevoArreglo.push(newABCArray[ index + convenio[index + 1] - 1 ]);     
+                    }else{
+                        nuevoArreglo.push(newABCArray[ index ]);
+                    }
+                    agregar++;
+                    alert('PRIMER LETRA');
+                }else{ 
+                    if(!empiezacripto){
+                        index2++;
+                    }else{
+                         nuevoArreglo.push(newABCArray[ index2 ]);
+                         index2++;
+                    } 
+                   
+                }
+                if(index == 26){ index = -1;} if(index2 == 26){ index2 = -1;} 
+                alert(nuevoArreglo.length);
+                /*else {
+                    var indexOf = nuevoArreglo.indexOf(abcArray[ index ]);
+                    if( indexOf == -1 ){
+                        nuevoArreglo.push(abcArray[ index ]);
+                        abcArray.splice( index, 1);
+                        agregar--;
+                    }
+                    else {
+                        agregar++;
+                        continue;
+                    }
+                    agregar++;
+                }*/
+            }alert(console.log(nuevoArreglo));
+
+         //   alert(nuevoArreglo);
+           // do{
+              /*  for(var i=0; i< 26; i++) 
+                {
+                   // alert(abecedario.charAt(i) + " - " + regleta.charAt(i))
+                        if(empiezacripto){
+                            if(regleta.charAt(j) == convenio1.substring(0,1)){
+                                alert(i + ''); 
+                                movimientos += parseInt(convenio1.substring(2,3) + convenio1.substring(4,5));
+                                cripto += regleta.charAt(j + movimientos);   
+                               
+                            }else{
+                                cripto += regleta.charAt(j + movimientos); 
+                                alert(cripto);
+                            }
+                        }else{
+                            for(var j=0; j< 26; j++){
+                                alert(abecedario.charAt(i) + " - " + regleta.charAt(j))
+                                if(abecedario.charAt(i) == indicativo.substring(0,1) && regleta.charAt(j) == indicativo.substring(2,3)){
+                                    alert('PRIMERA LETRA');
+                                    cripto += regleta.charAt(j);
+                                    empiezacripto = true;
+                                    alert(cripto);
+                                }
+                            }
+                        }
+
+                }*/
+            //}while(cripto.length < 2) ; 
+            //alert(cripto);
+        });
+        </script>
+</html>

@@ -1,4 +1,4 @@
-function clearRepeat( array ) {
+		function clearRepeat( array ) {
 			return array.filter(function(item, pos, self) {
 				return self.indexOf(item) == pos;
 			});
