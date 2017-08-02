@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Encriptar</title>
+        <title>Sistema Cripto</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/estilo2.css" rel="stylesheet">
     </head>
-    <body onload="loadContent('encriptar.html');">
+    <body>
         <div class='container' style="width: 100%;">
             <div class='row'>
                 <div class='col-md-3'>
                     <ul class="nav flex-column" id='menu'>
                         <li class="nav-item">
-                            <a class="nav-link active" href="#" onclick="loadContent('encriptar.html')">Encriptar</a>
+                            <a class="nav-link active" href="index.html">Encriptar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadContent('desencriptar.html')">Desencriptar</a>
+                            <a class="nav-link" href="desencriptar.html">Desencriptar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadContent('configuracion.html')">Configuración</a>
+                            <a class="nav-link" href="configuracion.html">Configuración</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="manual.pdf" target="_blank">Manual</a>
@@ -30,25 +30,25 @@
                     </ul>
                 </div>
                 <div class='col-md-9'>
-                    <section id='content'>
-                        
+                    <section>
+                            <fieldset>
+                                <div class="form-group">
+                                    <h4><label>Escribir Mensaje</label></h4>
+                                    <textarea id='mensaje' class='form-control' rows="6"></textarea>
+                                    <h4><label>Mensaje Encriptado</label></h4>
+                                    <textarea id='cripto' class='form-control' rows="6" readonly></textarea>
+                                 </div>
+                            </fieldset>
                     </section>
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src='js/is.min.js'></script>
+        <script type="text/javascript" src='js/handlebars.js' ></script>
+        <script type="text/javascript" src='js/jquery-3.2.1.min.js'></script> 
+        <script type="text/javascript" src='js/main.js'></script>
         <script>
-                function loadContent(page) {
-                    var xhr = new XMLHttpRequest(); 
-                    xhr.onreadystatechange = function() {
-                        if (this.readyState == 4 && this.status == 200) {
-                        // Typical action to be performed when the document is ready:
-                        document.getElementById("content").innerHTML = xhr.responseText;
-                        }
-                    };
-                    xhr.open("GET", page , true);
-                    xhr.send(null);
-                    /* ignore result */
-                }
+        
         </script>
     </body>
 </html>

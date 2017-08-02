@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sistema Cripto</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/estilo2.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class='container' style="width: 100%;">
+            <div class='row'>
+                <div class='col-md-3'>
+                    <ul class="nav flex-column" id='menu'>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html">Encriptar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="desencriptar.html">Desencriptar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="configuracion.html">Configuración</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="manual.pdf" target="_blank">Manual</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.html">Salir</a>
+                        </li>                    
+                    </ul>
+                </div>
+                <div class='col-md-9'>
+                    <section>
+                            <fieldset>
+                                <div class="form-group">
+                                    <h4><label>Escribir Mensaje</label></h4>
+                                    <textarea id='mensaje' class='form-control' rows="6"></textarea>
+                                    <h4><label>Mensaje Desencriptado</label></h4>
+                                    <textarea id='cripto' class='form-control' rows="6" readonly></textarea>
+                                 </div>
+                            </fieldset>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src='js/is.min.js'></script>
+        <script type="text/javascript" src='js/handlebars.js' ></script>
+        <script type="text/javascript" src='js/jquery-3.2.1.min.js'></script> 
+        <script type="text/javascript" src='js/main.js'></script>
+        <script>
+        
+        </script>
+    </body>
+</html>
