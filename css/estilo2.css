@@ -1,0 +1,10 @@
+#menu{
+    height: 100vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div .col-md-3{
+   background-color: #f5f5f5  !important;
+}

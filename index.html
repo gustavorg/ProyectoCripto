@@ -1,12 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Inicio</title>
+        <title>Encriptar</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/estilo2.css" rel="stylesheet">
     </head>
-    <body>
-        Bienvenido
+    <body onload="loadContent('encriptar.html');">
+        <div class='container' style="width: 100%;">
+            <div class='row'>
+                <div class='col-md-3'>
+                    <ul class="nav flex-column" id='menu'>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="loadContent('encriptar.html')">Encriptar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="loadContent('desencriptar.html')">Desencriptar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="loadContent('configuracion.html')">Configuración</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="manual.pdf" target="_blank">Manual</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.html">Salir</a>
+                        </li>                    
+                    </ul>
+                </div>
+                <div class='col-md-9'>
+                    <section id='content'>
+                        
+                    </section>
+                </div>
+            </div>
+        </div>
+        <script>
+                function loadContent(page) {
+                    var xhr = new XMLHttpRequest(); 
+                    xhr.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                        // Typical action to be performed when the document is ready:
+                        document.getElementById("content").innerHTML = xhr.responseText;
+                        }
+                    };
+                    xhr.open("GET", page , true);
+                    xhr.send(null);
+                    /* ignore result */
+                }
+        </script>
     </body>
 </html>

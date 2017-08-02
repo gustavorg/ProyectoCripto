@@ -7,12 +7,15 @@
 		<link href="css/style.css" rel="stylesheet">
 	</head>
 	<body >
-		<input type='text' id='mensaje' ><br>
+		<textarea id='mensaje' ></textarea>
+		
 		<label>Criptación</label>
-		<input type='text' id='cripto' readonly>
+		<textarea id='cripto' readonly></textarea>
+		
 		<br>
 		<label>Desencriptación</label>
-		<input type='text' id='descripto' readonly>
+		<textarea id='descripto' readonly></textarea>
+
 	</body>
 
 		<script type="text/javascript" src='js/jquery-3.2.1.min.js' ></script>
@@ -27,10 +30,11 @@
 
 			$('#mensaje').change(function(){
 			var letters = 'abcdefghijklmnñopqrstuvwxyz';
+			var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
 			var numbers = '0123456789';
 			var mathematicalOperators = '+-*/';
 			var punctuationMarks = '.,;:\'"()[]{}¿?¡!-_';
-            var abc = letters + numbers + mathematicalOperators + punctuationMarks + ' ';
+            var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + ' ';
             //abc = letters;
 			var abcArray = abc.split('');
 			var newABCArray = sortear(abcArray);
@@ -42,6 +46,7 @@
 			    letrasafectadas.push(convenio.letra);
 			});
 			var texto = $('#mensaje').val();
+			console.log(texto);
 			var nuevoArreglo = [];
 			var indextexto = 0;
 			var movimientos = 0;
@@ -65,7 +70,11 @@
 			while( cripto.length != texto.length ){
 				var buscarletra = '';
 				buscarletra = texto.charAt(indextexto);
-                
+				if(buscarletra == '\n' ){
+					cripto.push(buscarletra);
+				    indextexto++;
+					continue;
+				}
 	            var index = abcArray.indexOf(buscarletra) + movimientos;
                 if ( nuevoArreglo[index] == undefined ) {
                     index = index - abcArray.length;
@@ -138,6 +147,11 @@
 				var buscarletra = '';
 				buscarletra = criptoString.charAt(indextexto);
 	            var index = initAbcDesencriptar.indexOf(buscarletra) + movimientos;
+				if(buscarletra == '\n' ){
+					desencriptado.push(buscarletra);
+				    indextexto++;
+					continue;
+				}
                 if ( initAbcDesencriptar[index] == undefined ) {
                     index = index - abcArray.length;
                     if( index < 0 ){
