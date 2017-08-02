@@ -10,7 +10,7 @@
     <body>
         <div class='container' style="width: 100%;">
             <div class='row'>
-                <div class='col-md-3'>
+                <div class='col-md-3' style="background-color: #f5f5f5 !important;">
                     <ul class="nav flex-column" id='menu'>
                         <li class="nav-item">
                             <a class="nav-link active" href="index.html">Encriptar</a>
@@ -34,9 +34,9 @@
                             <fieldset>
                                 <div class="form-group">
                                     <h4><label>Escribir Mensaje</label></h4>
-                                    <textarea id='mensaje' class='form-control' rows="6"></textarea>
+                                    <textarea id='cripto' class='form-control' rows="6"></textarea>
                                     <h4><label>Mensaje Desencriptado</label></h4>
-                                    <textarea id='cripto' class='form-control' rows="6" readonly></textarea>
+                                    <textarea id='mensaje' class='form-control' rows="6" readonly></textarea>
                                  </div>
                             </fieldset>
                     </section>
@@ -47,8 +47,16 @@
         <script type="text/javascript" src='js/handlebars.js' ></script>
         <script type="text/javascript" src='js/jquery-3.2.1.min.js'></script> 
         <script type="text/javascript" src='js/main.js'></script>
+        <script type="text/javascript" src='js/copyme.js'></script>
         <script>
+            $('#cripto').change(function(){
+                $('#mensaje').val( $('#cripto').val());
+            });
         
+
+            $('#mensaje').click(function(){
+                    $('#mensaje').copyme();
+            });
         </script>
     </body>
 </html>

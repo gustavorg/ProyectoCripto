@@ -10,7 +10,7 @@
     <body>
         <div class='container' style="width: 100%;">
             <div class='row'>
-                <div class='col-md-3'>
+                <div class='col-md-3' style="background-color: #f5f5f5 !important;">
                     <ul class="nav flex-column" id='menu'>
                         <li class="nav-item">
                             <a class="nav-link active" href="index.html">Encriptar</a>
@@ -31,14 +31,92 @@
                 </div>
                 <div class='col-md-9'>
                     <section>
-                            <fieldset>
+                        <div class="card">
+                            <div class="card-block">
                                 <div class="form-group">
-                                    <h4><label>Escribir Mensaje</label></h4>
-                                    <textarea id='mensaje' class='form-control' rows="6"></textarea>
-                                    <h4><label>Mensaje Encriptado</label></h4>
-                                    <textarea id='cripto' class='form-control' rows="6" readonly></textarea>
-                                 </div>
-                            </fieldset>
+                                    <h3>Configuración Base</h3>
+                                    <hr>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <label for="orden">Orden</label>
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox">Inverso
+                                                </label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="caracterinicial">Caracter Inicial</label>
+                                                <input type="text" class="form-control" id="caracterinicial">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="clavenumerica">Clave numérica</label>
+                                                <input type="text" class="form-control" id="clavenumerica">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ninitgradual"># Inicial p.g.</label>
+                                                <input type="text" class="form-control" id="ninitgradual">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ninitdoblea"># Inicial d.a.</label>
+                                                <input type="text" class="form-control" id="ninitdoblea">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-success">Guardar</button>
+                                            </div>                                               
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>                                  
+                          
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-block"> 
+                                            <h3>Algoritmos de Encriptamiento</h3>
+                                            <hr>                                   
+                                            <div id="accordion" role="tablist" aria-multiselectable="true">
+                                                <div class="card">
+                                                    <div class="card-header" role="tab" id="headingOne">
+                                                    <h5 class="mb-0">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                         #1 Encriptamiento Regleta
+                                                        </a>
+                                                    </h5>
+                                                    </div>
+
+                                                    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                                    <div class="card-block">
+
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-header" role="tab" id="headingTwo">
+                                                    <h5 class="mb-0">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                        #2 Encriptamiento Gradual
+                                                        </a>
+                                                    </h5>
+                                                    </div>
+                                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                    <div class="card-block">
+                                                        
+                                                    </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>   
+                                        </div>                                 
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-block">  
+                                        </div>
+                                    </div>                                    
+                                </div>
+                            </div>
                     </section>
                 </div>
             </div>
@@ -46,9 +124,10 @@
         <script type="text/javascript" src='js/is.min.js'></script>
         <script type="text/javascript" src='js/handlebars.js' ></script>
         <script type="text/javascript" src='js/jquery-3.2.1.min.js'></script> 
+        <script type="text/javascript" src='js/bootstrap.min.js' ></script>
         <script type="text/javascript" src='js/main.js'></script>
         <script>
-        
+           $('.collapse').collapse();
         </script>
     </body>
 </html>

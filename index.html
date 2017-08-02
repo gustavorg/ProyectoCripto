@@ -10,7 +10,7 @@
     <body>
         <div class='container' style="width: 100%;">
             <div class='row'>
-                <div class='col-md-3'>
+                <div class='col-md-3' style="background-color: #f5f5f5 !important;">
                     <ul class="nav flex-column" id='menu'>
                         <li class="nav-item">
                             <a class="nav-link active" href="index.html">Encriptar</a>
@@ -47,8 +47,18 @@
         <script type="text/javascript" src='js/handlebars.js' ></script>
         <script type="text/javascript" src='js/jquery-3.2.1.min.js'></script> 
         <script type="text/javascript" src='js/main.js'></script>
+        <script type="text/javascript" src='js/copyme.js'></script>
         <script>
+            $('#mensaje').change(function(){
+                $('#cripto').val( $('#mensaje').val());
+            });
         
+
+            $('#cripto').click(function(){
+
+                    $('#cripto').copyme();
+            });
+
         </script>
     </body>
 </html>
