@@ -1,200 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Encriptar</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/estilo2.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class='container' style="width: 100%;">
-            <div class='row'>
-                <div class='col-md-3' style="background-color: #f5f5f5 !important;">
-                    <ul class="nav flex-column" id='menu'>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="index.html">Encriptar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="desencriptar.html">Desencriptar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="configuracion.html">Configuración</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="manual.pdf" target="_blank">Manual</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.html">Salir</a>
-                        </li>                    
-                    </ul>
-                </div>
-                <div class='col-md-9'>
-                    <section>
+
+<head>
+    <title>Encriptar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/estilo2.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class='container' style="width: 100%;">
+        <div class='row'>
+            <div class='col-md-3' style="background-color: #f5f5f5 !important;">
+                <ul class="nav flex-column" id='menu'>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Encriptar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="desencriptar.html">Desencriptar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="configuracion.html">Configuración</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="manual.pdf" target="_blank">Manual</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Salir</a>
+                    </li>
+                </ul>
+            </div>
+            <div class='col-md-9'>
+                <section>
+                    <h3>Configuración Base</h3>
+                    <hr>
+                    <form>
+                        
                         <div class="card">
                             <div class="card-block">
-                                <div class="form-group">
-                                    <h3>Configuración Base</h3>
-                                    <hr>
-                                    <form>
-                                        <div class="row">
-                                            <div class="col-md-1">
-                                                <label for="orden">Orden</label>
+                                
+                                <div class="row" style="height: 13vh !important;">
+                                    <div class="col-12">
+                                        <ul class="list-inline text-center list-unstyled">
+                                            <li class="list-inline-item">
+
                                                 <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">Inverso</span>
+                                                    <input type="checkbox" class="custom-control-input">
+                                                    <span class="custom-control-indicator"></span>
+                                                    <span class="custom-control-description">Inverso</span>
                                                 </label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="caracterinicial">Caracter Inicial</label>
-                                                <input type="text" class="form-control" id="caracterinicial">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="clavenumerica">Clave numérica</label>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <label for="clavenumerica">Clave Numérica</label>
                                                 <input type="text" class="form-control" id="clavenumerica">
-                                            </div>
-                                            <div class="col-md-2">
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <label for="ninitdoblea">Palabra Clave</label>
+                                                <input type="text" class="form-control" id="ninitdoblea">
+                                            </li>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="list-inline text-center list-unstyled">
+                                            <li class="list-inline-item">
                                                 <label for="ninitgradual"># Inicial p.g.</label>
                                                 <input type="text" class="form-control" id="ninitgradual">
-                                            </div>
-                                            <div class="col-md-2">
+                                            </li>
+                                            <li class="list-inline-item">
                                                 <label for="ninitdoblea"># Inicial d.a.</label>
                                                 <input type="text" class="form-control" id="ninitdoblea">
-                                            </div>
-                                            <div class="col-md-3">
+                                            </li>
+                                            <li class="list-inline-item">
                                                 <button type="button" class="btn btn-success">Guardar</button>
-                                            </div>                                               
-                                        </div>
-                                    </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>                                  
-                          
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-block"> 
-                                            <h3>Algoritmos de Encriptamiento</h3>
-                                            <hr>                                   
-                                            <table class="table table-hover">
+                        </div>
+                        <div class="row" style="padding-top: 14px;">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="row" style="height: 34px;">
+                                            <h4 class="col-10">Algoritmos de Encriptamiento</h4>
+                                            <img src='img/add.svg' class="col-2">
+                                        </div>
+
+                                        <hr>
+                                        <table class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                <th>#</th>
-                                                <th>Algoritmo</th>
-                                                <th>Acciones</th>
+                                                    <th>#</th>
+                                                    <th>Algoritmo</th>
+                                                    <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                <th scope="row">1</th>
-                                                <td>Regleta</td>
-                                                <td><a href="#" >Editar</a> <a href="#">Eliminar</a></td>
+                                                    <th scope="row">1</th>
+                                                    <td>Regleta</td>
+                                                    <td><a href="#">Editar</a> <a href="#">Eliminar</a></td>
                                                 </tr>
                                             </tbody>
-                                            </table> 
-                                        </div>                                 
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-block">
-                                            <div class="form-group row">
+                            </div>
+                            <div class="col-md-6">
+                                <!-- FORMULARIO REGLETA -->
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-group row">
                                             <label for="example-text-input" class="col-2 col-form-label">Inverso</label>
-                                            <div class="col-10">
+                                            <div class="col-4">
                                                 <label class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input">
                                                 <span class="custom-control-indicator"></span>
                                                 </label>
                                             </div>
+                                            <label for="example-text-input" class="col-2 col-form-label">Palabra Clave</label>
+                                            <div class="col-4">
+                                                <input type="text" class="form-control" id="ninitdoblea">
                                             </div>
-                                            <div class="form-group row">
-                                            <label for="example-search-input" class="col-2 col-form-label">#1 Indicativo</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="text"  id="example-search-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-email-input" class="col-2 col-form-label">#2 Indicativo</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="text" id="example-email-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-url-input" class="col-2 col-form-label">URL</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="url" value="https://getbootstrap.com" id="example-url-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-tel-input" class="col-2 col-form-label">Telephone</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="tel" value="1-(555)-555-5555" id="example-tel-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-password-input" class="col-2 col-form-label">Password</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="password" value="hunter2" id="example-password-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-number-input" class="col-2 col-form-label">Number</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="number" value="42" id="example-number-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-datetime-local-input" class="col-2 col-form-label">Date and time</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-date-input" class="col-2 col-form-label">Date</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-month-input" class="col-2 col-form-label">Month</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="month" value="2011-08" id="example-month-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-week-input" class="col-2 col-form-label">Week</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="week" value="2011-W33" id="example-week-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-time-input" class="col-2 col-form-label">Time</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="time" value="13:45:00" id="example-time-input">
-                                            </div>
-                                            </div>
-                                            <div class="form-group row">
-                                            <label for="example-color-input" class="col-2 col-form-label">Color</label>
-                                            <div class="col-10">
-                                                <input class="form-control" type="color" value="#563d7c" id="example-color-input">
-                                            </div>
-                                            </div>                                              
                                         </div>
-                                    </div>                                    
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label for="example-search-input" class="col-6 col-form-label">#1 Indicativo</label>
+                                                    <div class="col-4">
+                                                        <input class="form-control" type="text" id="example-search-input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label for="example-email-input" class="col-6 col-form-label">#2 Indicativo</label>
+                                                    <div class="col-4">
+                                                        <input class="form-control" type="text" id="example-email-input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type='button' class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Configuración de   Convenios</button>
+
+                                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class='container' style="width: 100%;">
+                                                        <div class="row" style="padding: 31px;">
+                                                            <div class="col-md-6">
+                                                                <div class="row" style="height: 34px;">
+                                                                    <h5 class="col-10">Convenios</h5>
+                                                                    <img src='img/add.svg' class="col-2">
+                                                                </div>
+                                                                <table class="table table-hover">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>C</th>
+                                                                            <th>S</th>
+                                                                            <th>D</th>
+                                                                            <th>Acciones</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th>A</th>
+                                                                            <td>3</td>
+                                                                            <td>I</td>
+                                                                            <td><a href="#">Editar</a> <a href="#">Eliminar</a></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-md-1" style='border-left: 1px solid black;max-width: 1px;'></div>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group row">
+                                                                    <label for="example-text-input" class="col-7 col-form-label">Caracter</label>
+                                                                    <div class="col-5">
+                                                                        <input class="form-control" type="text" id="example-text-input">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="example-search-input" class="col-7 col-form-label">Salto</label>
+                                                                    <div class="col-5">
+                                                                        <input class="form-control" type="number" min="1" max="9">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="example-email-input" class="col-7 col-form-label">Dirección</label>
+                                                                    <div class="col-5">
+                                                                        <input class="form-control" type="email" id="example-email-input">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="example-email-input" class="col-7 col-form-label"></label>
+                                                                    <div class="col-5">
+                                                                        <button type="button" class="btn btn-success">Guardar</button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- FORMULARIO GRADUAL -->
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-group row">
+                                            <label for="example-text-input" class="col-2 col-form-label">Inverso</label>
+                                            <div class="col-4">
+                                                <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <span class="custom-control-indicator"></span>
+                                                </label>
+                                            </div>
+                                            <label for="example-text-input" class="col-2 col-form-label">Palabra Clave</label>
+                                            <div class="col-4">
+                                                <input type="text" class="form-control" id="ninitdoblea">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label for="example-search-input" class="col-6 col-form-label"># Inicial p.g.</label>
+                                                    <div class="col-4">
+                                                        <input class="form-control" type="text" id="example-search-input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label for="example-email-input" class="col-6 col-form-label"># Inicial d.a.</label>
+                                                    <div class="col-4">
+                                                        <input class="form-control" type="text" id="example-email-input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group row">
+                                                <label for="example-search-input" class="col-6 col-form-label">Clave Numérica</label>
+                                                <div class="col-4">
+                                                    <input class="form-control" type="text" id="example-search-input">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
-                    </section>
-                </div>
+                        </div>
             </div>
         </div>
-        <script type="text/javascript" src='js/is.min.js'></script>
-        <script type="text/javascript" src='js/handlebars.js' ></script>
-        <script type="text/javascript" src='js/jquery-3.2.1.min.js'></script> 
-        <script type="text/javascript" src='js/bootstrap.min.js' ></script>
-        <script type="text/javascript" src='js/main.js'></script>
-        <script>
-           $('.collapse').collapse();
-        </script>
-    </body>
+        </form>
+        </section>
+    </div>
+    </div>
+    </div>
+    <script type="text/javascript" src='js/is.min.js'></script>
+    <script type="text/javascript" src='js/handlebars.js'></script>
+    <script type="text/javascript" src='js/jquery-3.2.1.min.js'></script>
+    <script type="text/javascript" src='js/bootstrap.min.js'></script>
+    <script type="text/javascript" src='js/main.js'></script>
+    <script>
+        $('.collapse').collapse();
+    </script>
+</body>
+
 </html>

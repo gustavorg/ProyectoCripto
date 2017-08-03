@@ -13,22 +13,20 @@
 
                 <div class="form__field">
                 <label for="login__username"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use></svg><span class="hidden">Username</span></label>
-                <input id="login__username" type="text" name="username" v-model='info.user' class="form__input" placeholder="Usuario" required>
+                <input id="login__username" type="text" name="username" id='username' class="form__input" placeholder="Usuario" required>
                 </div>
 
                 <div class="form__field">
                 <label for="login__password"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#lock"></use></svg><span class="hidden">Password</span></label>
-                <input id="login__password" type="password" v-model='info.password' name="password" class="form__input" placeholder="Password" required>
+                <input id="login__password" type="password" id="password" name="password" class="form__input" placeholder="Password" required>
                 </div>
 
                 <div class="form__field">
-                <input type="submit" value="Sign In">
+                <input type="button" id='btningresar' value="Ingresar">
                 </div>
 
             </form>
-
-            <p class="text--center">Olvidaste tu Password? <a href="#">Click Aquí</a> <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="assets/images/icons.svg#arrow-right"></use></svg></p>
-                <div v-html="messageServer.message"></div>            
+                <div id='mensaje'></div>            
             
         </div>   
     
@@ -36,6 +34,21 @@
 
     </body>
     <script type="text/javascript" src='js/jquery-3.2.1.min.js' ></script>
+    <script>
+        $('#btningresar').click(function(){
+            var username = $('#username').val();
+            var password = $('#password').val();
+
+            if(username != 'admin'){
+                $('#mensaje').html("<div class='alert alert-danger' role='alert'><strong>Atención!</strong>El usuario no existe.</div>")
+            }else if(password != '#Pa@@w0rd'){
+                
+            }
+            else{
+
+            }
+        });
+    </script>
 
 </html>
 
