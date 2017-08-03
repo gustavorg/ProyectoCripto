@@ -44,16 +44,32 @@
 								    return parseInt(item, 10);
 								});
 								n1i =  parseInt(n1i, 10);
-								var columnsRepeat = {};
 								var cube = [];
+								var cubeSecond = [];
 								var _columns = columns.concat();
 								_columns.sort();
-								var newOrderColumns = [];
+								var columnsRepeat = {};
 								_columns.forEach( function ( number ) {
 									columnsRepeat[number] = false;
 									cube.push( {} );
+									cubeSecond.push( {} );
 								} );
-								var j = nombredeaplicacion.utils.getIndexColumn( _columns, n1i );
+								var cubeRow = 0;
+
+								/* PROCEDIMIENTO GRADUAL */
+								var indexColumn = nombredeaplicacion.utils.getIndexColumn( columns, n1i );
+								for (var i = 0; i < uniqueCadenaArray.length; i++) {
+									if ( cube[ indexColumn ] == null ) {
+											indexColumn = 0;
+										cubeRow++;
+									}
+									cube[ indexColumn ][ cubeRow ] = uniqueCadenaArray[i];
+									indexColumn++;
+								}
+								/* FIN PROCEDIMIENTO GRADUAL */
+								/* DOBLE APLICACION */
+								var newOrderColumns = [];
+								var j = nombredeaplicacion.utils.getIndexColumn( _columns, n2i );
 								while ( newOrderColumns.length != _columns.length ) {
 									if ( _columns[j] === undefined ) {
 										j = 0;
@@ -61,52 +77,34 @@
 									newOrderColumns.push( _columns[j] );
 									j++;
 								}
-								var cubeRow = 0;
-								var indexColumn = nombredeaplicacion.utils.getIndexColumn( columns, n1i );
-								console.log( uniqueCadenaArray );
-								console.log( columns );
-								console.log( newOrderColumns );
-								console.log( columnsRepeat );
-								console.log( cube );
-								for (var i = 0; i < uniqueCadenaArray.length; i++) {
-									if ( cube[ indexColumn ] == null ) {
-										columnsRepeat[ newOrderColumns[cubeRow] ] = true;
-										indexColumn = 0;
-										cubeRow++;
-									}
-									cube[ indexColumn ][ cubeRow ] = uniqueCadenaArray[i];
-									indexColumn++;
-								}
-								return;
-								console.log( columnsRepeat, cube );
-								/* PRIMERA ENCRiPTACIÓN */
-								for (var i = 0; i < uniqueCadenaArray.length; i++) {
-									if ( cube[ indexColumn ] == null ) {
-										columnsRepeat[ n1i ] = true;
-										n1i++;
-										indexColumn = columns.indexOf( n1i );
-										if ( indexColumn === -1 ) {
-											if ( columnsRepeat[ 1 ] ) {
-												n1i--;
-											}
-											else {
-												n1i = 1;
-											}
-											indexColumn = nombredeaplicacion.utils.getIndexColumn( columns, n1i );
+								cubeRow = 0;
+								var indexColumnCube = _indexColumnCube = nombredeaplicacion.utils.getIndexColumn( columns, newOrderColumns[0] );
+								for (var i = 0; i < newOrderColumns.length; i++) {
+									indexColumnCube = nombredeaplicacion.utils.getIndexColumn( columns, newOrderColumns[i] );
+									var arrColumn = Object.keys(cube[indexColumnCube]).map(function (key) { return cube[indexColumnCube][key]; });
+									for (var h = 0; h < arrColumn.length; h++) {
+										if ( cubeSecond[ _indexColumnCube ] == null ) {
+											columnsRepeat[ newOrderColumns[i] ] = true;
+											_indexColumnCube = indexColumnCube;
+											cubeRow++;
 										}
-										else {
-											if ( columnsRepeat[ n1i ] ) {
-												n1i--;
-												indexColumn = nombredeaplicacion.utils.getIndexColumn( columns, n1i );
-											}
-										}
-										cubeRow++;
+										cubeSecond[ _indexColumnCube ][ cubeRow ] = arrColumn.shift();
+										h--;
+										_indexColumnCube++;
 									}
-									cube[ indexColumn ][ cubeRow ]= uniqueCadenaArray[i];
-									indexColumn++;
-									//console.log( uniqueCadenaArray[i] );
 								}
-								return abc;
+								/* FIN DOBLE APLICACION */
+								/* 	OBTENER CRIPTO */
+								var cripto = [];
+								for (var i = 0; i < newOrderColumns.length; i++) {
+									indexColumnCube = nombredeaplicacion.utils.getIndexColumn( columns, newOrderColumns[i] );
+									var arrColumn = Object.keys(cubeSecond[indexColumnCube]).map(function (key) { return cubeSecond[indexColumnCube][key]; });
+									for (var h = 0; h < arrColumn.length; h++) {
+										cripto.push( arrColumn.shift() );
+										h--;
+									}
+								}
+								return cripto;
 							}
 							throw "Mal formato en le alfabeto";
 						} 
@@ -185,7 +183,7 @@
 	var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + ' ';
 	abc = letters;
 	var abcArray = abc.split('');
-	var keyWord = 'Nico Quispe';
+	var keyWord = 'nico quispe';
 	nombredeaplicacion.utils.sort(abcArray, keyWord, '46327', '3', '4');
 	// The routing fires all common scripts, followed by the page specific scripts.
 	// Add additional events for more control over timing e.g. a finalize event
