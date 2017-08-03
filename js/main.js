@@ -41,9 +41,10 @@
 								var keyWordArray = keyWord.replace(/ /g, '').split('');
 								var uniqueCadenaArray = nombredeaplicacion.utils.clearRepeat( keyWordArray.concat( base ) );
 								var columns = numericalKey.split('').map(function(item) {
-								    return parseInt(item, 10);
+									return parseInt(item, 10);
 								});
 								n1i =  parseInt(n1i, 10);
+								n2i =  parseInt(n2i, 10);
 								var cube = [];
 								var cubeSecond = [];
 								var _columns = columns.concat();
@@ -122,22 +123,189 @@
 
 					}
 				},
-
 				'regletas': {
-					encrypt: function(base, xp, ll, convenios, init) {
+					encrypt: function(plainText, xp, ll, l1i, l2i, convenios) {
+						var indicativo =[ l1i, l2i];
+						var letrasafectadas = [];
+						convenios.forEach(function(convenio) {
+							letrasafectadas.push(convenio.letra);
+						});
+						var nuevoXP = [];
+						var nuevoLL = [];
+						var indextexto = 0;
+						var movimientos = 0;
+						// ORDENAR INDICATIVO
+						var indiceIndicativo = xp.indexOf(indicativo[0]);
+						while( nuevoXP.length != xp.length ){
+							if ( xp[indiceIndicativo] == null ) {
+								xp[0];
+								indiceIndicativo = -1;
+							}
+							else 
+								nuevoXP.push(xp[indiceIndicativo]);
+							indiceIndicativo++;
+						}
 
+						var indiceIndicativo = ll.indexOf(indicativo[1]);
+						while( nuevoLL.length != ll.length ){
+							if ( ll[indiceIndicativo] == null ) {
+								ll[0];
+								indiceIndicativo = -1;
+							}
+							else 
+								nuevoLL.push(ll[indiceIndicativo]);
+							indiceIndicativo++;
+						}
+						//FIN ORDENAR INDICATIVO
+						console.log(nuevoXP);
+						console.log(nuevoLL);
+						var textEncrypt = [];
+						var saltos;
+						while( textEncrypt.length != plainText.length ){
+							var buscarletra = '';
+							buscarletra = plainText.charAt(indextexto);
+							if(buscarletra == '\n' ){
+								textEncrypt.push(buscarletra);
+								indextexto++;
+								continue;
+							}
+							var index = nuevoLL.indexOf(buscarletra) + movimientos;
+							if ( nuevoXP[index] == undefined ) {
+								index = index - nuevoLL.length;
+								if( index < 0 ){
+									index+= nuevoLL.length*2;
+								}
+								var indiceIndicativoAplicable = letrasafectadas.indexOf(buscarletra);
+								textEncrypt.push(nuevoXP[ index ]);
+								if ( indiceIndicativoAplicable != -1 ){
+									if(convenioConfig[indiceIndicativoAplicable].direccion == 'derecha'){ 
+										saltos = convenioConfig[indiceIndicativoAplicable].saltos * -1;
+									}else{
+										saltos = convenioConfig[indiceIndicativoAplicable].saltos;
+									}
+									movimientos = movimientos + saltos;
+								}
+								indextexto++;
+							}
+							else {
+								var indiceIndicativoAplicable = letrasafectadas.indexOf(buscarletra);
+								textEncrypt.push(nuevoXP[ index ]);
+								if ( indiceIndicativoAplicable != -1 ){
+									if(convenioConfig[indiceIndicativoAplicable].direccion == 'derecha'){ 
+										saltos = convenioConfig[indiceIndicativoAplicable].saltos * -1;
+									}else{
+										saltos = convenioConfig[indiceIndicativoAplicable].saltos;
+									}
+									movimientos = movimientos + saltos;
+								}
+								indextexto++;
+							}
+						}
+						return textEncrypt;
 					},
-					decrypt: function(base, xp, ll, convenios, init) {
-						
+					decrypt: function(plainText, xp, ll, l1i, l2i, convenios) {
+						var indicativo =[ l1i, l2i];
+						var letrasafectadas = [];
+						convenios.forEach(function(convenio) {
+							letrasafectadas.push(convenio.letra);
+						});
+						var nuevoXP = [];
+						var nuevoLL = [];
+						var indextexto = 0;
+						var movimientos = 0;
+						// ORDENAR INDICATIVO
+						var indiceIndicativo = ll.indexOf(indicativo[1]);
+						while( nuevoLL.length != ll.length ){
+							if ( ll[indiceIndicativo] == null ) {
+								ll[0];
+								indiceIndicativo = -1;
+							}
+							else 
+								nuevoLL.push(ll[indiceIndicativo]);
+							indiceIndicativo++;
+						}
+
+						var indiceIndicativo = xp.indexOf(indicativo[0]);
+						while( nuevoXP.length != xp.length ){
+							if ( xp[indiceIndicativo] == null ) {
+								xp[0];
+								indiceIndicativo = -1;
+							}
+							else 
+								nuevoXP.push(xp[indiceIndicativo]);
+							indiceIndicativo++;
+						}
+						//FIN ORDENAR INDICATIVO
+						var textEncrypt = [];
+						var saltos;
+						while( textEncrypt.length != plainText.length ){
+							var buscarletra = '';
+							buscarletra = plainText.charAt(indextexto);
+							if(buscarletra == '\n' ){
+								textEncrypt.push(buscarletra);
+								indextexto++;
+								continue;
+							}
+							var index = nuevoXP.indexOf(buscarletra) + movimientos;
+							if ( nuevoXP[index] == undefined ) {
+								index = index - nuevoXP.length;
+								if( index < 0 ){
+									index+= nuevoXP.length*2;
+								}
+								var letraDesencriptada = nuevoLL[ index ];
+								textEncrypt.push(letraDesencriptada);
+								var indiceIndicativoAplicable = letrasafectadas.indexOf(letraDesencriptada);
+								if ( indiceIndicativoAplicable != -1 ){
+									if(convenioConfig[indiceIndicativoAplicable].direccion == 'derecha'){ 
+										saltos = convenioConfig[indiceIndicativoAplicable].saltos;
+									}else{
+										saltos = convenioConfig[indiceIndicativoAplicable].saltos * -1;
+									}
+									movimientos = movimientos + saltos;
+								}
+								indextexto++;
+							}
+							else {
+								var letraDesencriptada = nuevoLL[ index ];
+								textEncrypt.push(letraDesencriptada);
+								var indiceIndicativoAplicable = letrasafectadas.indexOf(letraDesencriptada);
+								if ( indiceIndicativoAplicable != -1 ){
+									if(convenioConfig[indiceIndicativoAplicable].direccion == 'derecha'){ 
+										saltos = convenioConfig[indiceIndicativoAplicable].saltos;
+									}else{
+										saltos = convenioConfig[indiceIndicativoAplicable].saltos * -1;
+									}
+									movimientos = movimientos + saltos;
+								}
+								indextexto++;
+							}
+						}
+						return textEncrypt;
 					}
 				},
 				
 				'gradual': {
-					encrypt: function(base, xp, ll, xp, init) {
-
+					encrypt: function( plainText, xp, ll) {
+						var plainText = plainText.split('');
+						var textEncrypt = [];
+						for (var i = 0; i < plainText.length; i++) {
+							var indexLetter = nombredeaplicacion.utils.getIndexColumn( xp, plainText[i] );
+							if( indexLetter !== -1 ){
+								textEncrypt.push(ll[indexLetter]);
+							}
+						}
+						return textEncrypt;
 					},
-					decrypt: function(base, xp, ll, xp, init) {
-						
+					decrypt: function( plainText, xp, ll) {
+						var plainText = plainText.split('');
+						var textDecrypt = [];
+						for (var i = 0; i < plainText.length; i++) {
+							var indexLetter = nombredeaplicacion.utils.getIndexColumn( ll, plainText[i] );
+							if( indexLetter !== -1 ){
+								textDecrypt.push(xp[indexLetter]);
+							}
+						}
+						return textDecrypt;
 					}
 				},
 				
@@ -149,7 +317,7 @@
 						
 					},
 					get: function() {
-						JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));                              
+						JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));							  
 					},
 					set: function() {
 						localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));   
@@ -167,7 +335,7 @@
 				
 						},
 						get: function() {
-							JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));                              
+							JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));							  
 						},
 						set: function() {
 							localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));   
@@ -184,7 +352,25 @@
 	abc = letters;
 	var abcArray = abc.split('');
 	var keyWord = 'nico quispe';
-	nombredeaplicacion.utils.sort(abcArray, keyWord, '46327', '3', '4');
+	var alfabetoDesordenador = nombredeaplicacion.utils.sort(abcArray, keyWord, '46327', '3', '4');
+	var XP = nombredeaplicacion.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '2');
+	var LL = nombredeaplicacion.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '3');
+	var textoEncriptado = nombredeaplicacion.gradual.encrypt('hola', XP, LL);
+	var textoDesencriptado = nombredeaplicacion.gradual.decrypt(textoEncriptado.join(''), XP, LL); 
+	console.log(alfabetoDesordenador);
+	console.log(XP);
+	console.log(LL);
+	console.log(textoEncriptado);
+	console.log(textoDesencriptado);
+
+	console.log('----------------------');
+	var convenioConfig = [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}];
+	var textoEncriptado2 = nombredeaplicacion.regletas.encrypt('hola', XP, LL, 'a', 'c', convenioConfig );
+	var textoDesencriptado2 = nombredeaplicacion.regletas.decrypt(textoEncriptado2.join(''), XP, LL, 'a', 'c', convenioConfig); 
+	console.log(textoEncriptado2);
+	console.log(textoDesencriptado2);
+
+
 	// The routing fires all common scripts, followed by the page specific scripts.
 	// Add additional events for more control over timing e.g. a finalize event
 	var UTIL = {
