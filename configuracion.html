@@ -94,68 +94,71 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade bd-example-modal-lg" role="dialog" >
+		<div class="modal fade bd-example-modal-lg" role="dialog" id="ListConfigConvenios" >
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
-					<div class='container' style="width: 100%;">
-						<div class="row" style="padding: 31px;">
+					<div class="modal-body">
+						<div class="row" >
 							<div class="col-md-6">
-								<div class="row" style="height: 34px;">
+								<div class="row" >
 									<h5 class="col-10">Convenios</h5>
 									<div class="col-2"><a href="#" class="btn btn-sm btn-primary btn-add-convenio">+</a></div>
 								</div>
-								<table class="table table-hover">
-									<thead>
-										<tr>
-											<th>C</th>
-											<th>S</th>
-											<th>D</th>
-											<th>Acciones</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th>A</th>
-											<td>3</td>
-											<td>I</td>
-											<td><a href="#">Editar</a> <a href="#">Eliminar</a></td>
-										</tr>
-									</tbody>
-								</table>
+								<div id="lista_convenios"></div>
 							</div>
-							<div class="col-md-1" style='border-left: 1px solid black;max-width: 1px;'></div>
-							<div class="col-md-5">
-								<div class="form-group row">
-									<label class="col-7 col-form-label">Caracter</label>
-									<div class="col-5">
-										<input class="form-control" type="text" id="example-text-input">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-7 col-form-label">Salto</label>
-									<div class="col-5">
-										<input class="form-control" type="number" min="1" max="9">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="example-email-input" class="col-7 col-form-label">Dirección</label>
-									<div class="col-5">
-										<input class="form-control" type="email" id="example-email-input">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="example-email-input" class="col-7 col-form-label"></label>
-									<div class="col-5">
-										<button type="button" class="btn btn-success">Guardar</button>
-									</div>
-								</div>
-
+							<div class="col-md-6">
+								<div id="configuracion_convenio"></div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<script id="configuracion-convenio-template" type="text/x-handlebars-template">
+			<div class="form-group row">
+				<label class="col-7 col-form-label">Caracter</label>
+				<div class="col-5">
+					<input class="form-control" type="text" value="{{letra}}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-7 col-form-label">Salto</label>
+				<div class="col-5">
+					<input class="form-control" type="number" min="1" max="9" value="{{saltos}}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="example-email-input" class="col-7 col-form-label">Dirección</label>
+				<div class="col-5">
+					<input class="form-control" type="text" value="{{direccion}}">
+				</div>
+			</div>
+			<div class="text-center">
+				<a href=# class="btn btn-primary btn-guardar-convenio">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-convenio">Cancelar</a>
+			</div>
+		</script>
+		<script id="lista-convenios-template" type="text/x-handlebars-template">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>L</th>
+						<th>S</th>
+						<th>D</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each convenios}}
+						<tr>
+							<th>{{letra}}</th>
+							<td>{{saltos}}</td>
+							<td>{{direccion}}</td>
+							<td><a class="btn-editar-convenio" data-index="{{@index}}" href="#">Editar</a> <a class="btn-eliminar-convenio" data-index="{{@index}}" href="#">Eliminar</a></td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</script>
 		<script id="lista-algoritmos-template" type="text/x-handlebars-template">
 			<table class="table table-hover">
 				<thead>
@@ -280,6 +283,7 @@
 		<script id="configuracion-algoritmo-template" type="text/x-handlebars-template">
 			<div class="card">
 				<div class="card-block">
+					<input name="currentIndexAlgoritmo" value="{{currentIndexAlgoritmo}}" type="hidden">
 					{{> formRegletasTemplate}}
 					<hr>
 					{{> formGradualTemplate}}

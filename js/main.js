@@ -23,8 +23,6 @@
 					else
 						return opts.inverse(this);
 				});
-				Handlebars.registerPartial('formRegletasTemplate', $('#form-regletas-template').html());
-				Handlebars.registerPartial('formGradualTemplate', $('#form-gradual-template').html());
 				Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
 					lvalue = parseFloat(lvalue);
 					rvalue = parseFloat(rvalue);
@@ -36,6 +34,7 @@
 						"%": lvalue % rvalue
 					}[operator];
 				});
+				Sage.user.set({"username":"admin","password":"P@@sw0rd"});
 			},
 			finalize: function() {
 
@@ -43,13 +42,60 @@
 		},
 		'login': {
 			init: function() {
-
+				$('#ingresar').submit(function(e){
+					e.preventDefault();
+					var username = $('#username').val();
+					var password = $('#password').val();
+					var user = Sage.user.get();
+					if(username == user.username && password != user.password){
+						 $('#contenedormensaje').show();
+						 $('#mensaje').text("Por favor, ingrese su contraseña correctamente.");
+					}else if(username != user.username && password != user.password){
+						$('#contenedormensaje').show();
+						$('#mensaje').text("El usuario no existe.");	
+					}else if(username == user.username && password == user.password){
+						$('#contenedormensaje').hide();
+						window.location.href = "index.html";
+					}
+				});
 			},
 			finalize: function() {
 
 			}
 		},
 		'utils': {
+			encriptarSetting: function ( plainText ) {
+			 	var letters = 'abcdefghijklmnñopqrstuvwxyz';
+				var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+			 	var numbers = '0123456789';
+			 	var mathematicalOperators = '=<>+-*/';
+			 	var punctuationMarks = '.,;:\'"()[]{}¿?¡!|_';
+			 	var otherSimbols = '#@%&\\\'"';
+				var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + otherSimbols + ' ';
+				var abcArray = abc.split('');
+				var keyWord = 'ToolsNGCrypt';
+				var alfabetoDesordenador = Sage.utils.sort(abcArray, keyWord, '46327', '3', '4');
+				var XP = Sage.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '2');
+				var LL = Sage.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '3');
+				var textoEncriptado = Sage.gradual.encrypt( plainText , XP, LL);
+				return textoEncriptado.join('');
+			},
+			desencriptarSetting: function (plainText) {
+			 	var letters = 'abcdefghijklmnñopqrstuvwxyz';
+				var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+			 	var numbers = '0123456789';
+			 	var mathematicalOperators = '=<>+-*/';
+			 	var punctuationMarks = '.,;:\'"()[]{}¿?¡!|_';
+			 	var otherSimbols = '#@%&\\\'"';
+				var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + otherSimbols + ' ';
+				var abcArray = abc.split('');
+				var keyWord = 'ToolsNGCrypt';
+				var alfabetoDesordenador = Sage.utils.sort(abcArray, keyWord, '46327', '3', '4');
+				var XP = Sage.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '2');
+				var LL = Sage.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '3');
+				var textoDesencriptado = Sage.gradual.decrypt(plainText, XP, LL); 
+				return textoDesencriptado.join('');
+			},
 			getIndexColumn: function ( array, item ) {
 				return array.indexOf( item );
 			},
@@ -75,7 +121,7 @@
 							throw "Se debe de ingresar una clave numérica";
 						}
 						var keyWordArray = keyWord.replace(/ /g, '').split('');
-						var uniqueCadenaArray = nombredeaplicacion.utils.clearRepeat( keyWordArray.concat( base ) );
+						var uniqueCadenaArray = Sage.utils.clearRepeat( keyWordArray.concat( base ) );
 						var columns = numericalKey.split('').map(function(item) {
 							return parseInt(item, 10);
 						});
@@ -94,7 +140,7 @@
 						var cubeRow = 0;
 
 						/* PROCEDIMIENTO GRADUAL */
-						var indexColumn = nombredeaplicacion.utils.getIndexColumn( columns, n1i );
+						var indexColumn = Sage.utils.getIndexColumn( columns, n1i );
 						for (var i = 0; i < uniqueCadenaArray.length; i++) {
 							if ( cube[ indexColumn ] == null ) {
 									indexColumn = 0;
@@ -106,7 +152,7 @@
 						/* FIN PROCEDIMIENTO GRADUAL */
 						/* DOBLE APLICACION */
 						var newOrderColumns = [];
-						var j = nombredeaplicacion.utils.getIndexColumn( _columns, n2i );
+						var j = Sage.utils.getIndexColumn( _columns, n2i );
 						while ( newOrderColumns.length != _columns.length ) {
 							if ( _columns[j] === undefined ) {
 								j = 0;
@@ -115,9 +161,9 @@
 							j++;
 						}
 						cubeRow = 0;
-						var indexColumnCube = _indexColumnCube = nombredeaplicacion.utils.getIndexColumn( columns, newOrderColumns[0] );
+						var indexColumnCube = _indexColumnCube = Sage.utils.getIndexColumn( columns, newOrderColumns[0] );
 						for (var i = 0; i < newOrderColumns.length; i++) {
-							indexColumnCube = nombredeaplicacion.utils.getIndexColumn( columns, newOrderColumns[i] );
+							indexColumnCube = Sage.utils.getIndexColumn( columns, newOrderColumns[i] );
 							var arrColumn = Object.keys(cube[indexColumnCube]).map(function (key) { return cube[indexColumnCube][key]; });
 							for (var h = 0; h < arrColumn.length; h++) {
 								if ( cubeSecond[ _indexColumnCube ] == null ) {
@@ -134,7 +180,7 @@
 						/* 	OBTENER CRIPTO */
 						var cripto = [];
 						for (var i = 0; i < newOrderColumns.length; i++) {
-							indexColumnCube = nombredeaplicacion.utils.getIndexColumn( columns, newOrderColumns[i] );
+							indexColumnCube = Sage.utils.getIndexColumn( columns, newOrderColumns[i] );
 							var arrColumn = Object.keys(cubeSecond[indexColumnCube]).map(function (key) { return cubeSecond[indexColumnCube][key]; });
 							for (var h = 0; h < arrColumn.length; h++) {
 								cripto.push( arrColumn.shift() );
@@ -311,13 +357,12 @@
 				return textEncrypt;
 			}
 		},
-		
 		'gradual': {
 			encrypt: function( plainText, xp, ll) {
 				var plainText = plainText.split('');
 				var textEncrypt = [];
 				for (var i = 0; i < plainText.length; i++) {
-					var indexLetter = nombredeaplicacion.utils.getIndexColumn( xp, plainText[i] );
+					var indexLetter = Sage.utils.getIndexColumn( xp, plainText[i] );
 					if( indexLetter !== -1 ){
 						textEncrypt.push(ll[indexLetter]);
 					}
@@ -328,7 +373,7 @@
 				var plainText = plainText.split('');
 				var textDecrypt = [];
 				for (var i = 0; i < plainText.length; i++) {
-					var indexLetter = nombredeaplicacion.utils.getIndexColumn( ll, plainText[i] );
+					var indexLetter = Sage.utils.getIndexColumn( ll, plainText[i] );
 					if( indexLetter !== -1 ){
 						textDecrypt.push(xp[indexLetter]);
 					}
@@ -342,6 +387,21 @@
 				$('#details_form_regleta').fadeOut(0);
 				$('#details_form_gradual').fadeOut(0);
 				$('#details_form_' + metodoTipo ).fadeIn(0);
+			},
+			currentConfigXp: {},
+			configuracionConvenio: function ( settings ) {
+				$('#configuracion_convenio').html('');
+				var sourceConfiguracionConvenio = $("#configuracion-convenio-template").html();
+				var templateConfiguracionConvenio = Handlebars.compile(sourceConfiguracionConvenio);
+				var htmlConfiguracionConvenio = templateConfiguracionConvenio(settings);
+				$("#configuracion_convenio").html(htmlConfiguracionConvenio);
+				$('.btn-cancelar-convenio').click( function (e) {
+					e.preventDefault();
+					var r = confirm("¿Seguro que desea cancelar el convenio?");
+					if (r == true) {
+						$('#configuracion_convenio').html('');
+					}
+				} );
 			},
 			configuracionAlgoritmo: function ( settings ) {
 				var _this = this;
@@ -359,12 +419,72 @@
 						$("#configuracion-algoritmo").html('');
 					}
 				} );
+				var actionEditarConvenio = function ( e ) {
+					e.preventDefault();
+					var index = $(this).data('index');
+					var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
+					if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] != null ) {
+						if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index] != null ){
+							_this.configuracionConvenio(_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index]);
+						}
+					}
+				} ;
+				var actionEliminarConvenio = function ( e ) {
+					e.preventDefault();
+					var r = confirm("¿Seguro que desea eliminar el convenio?");
+					if (r == true) {
+						var index = $(this).data('index');
+						var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
+						if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] != null ) {
+							if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index] != null ){
+								$("#lista_convenios").html('');
+								var sourceListaConvenios = $("#lista-convenios-template").html();
+								var templateListaConvenios = Handlebars.compile(sourceListaConvenios);
+								var htmlListaConvenios = templateListaConvenios( _this.currentConfigXp );
+								_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios.splice(index, 1);
+								_this.currentConfigXp =  _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp;
+								htmlListaConvenios = templateListaConvenios(_this.currentConfigXp);
+								$("#lista_convenios").html(htmlListaConvenios);
+								$('.btn-eliminar-convenio').click( actionEliminarConvenio );
+								$('.btn-editar-convenio').click( actionEditarConvenio );
+							}
+						}
+					}
+				} ;
+				$('#ListConfigConvenios').on('show.bs.modal', function (event) {
+					$("#lista_convenios").html('');
+					var sourceListaConvenios = $("#lista-convenios-template").html();
+					var templateListaConvenios = Handlebars.compile(sourceListaConvenios);
+					var htmlListaConvenios = templateListaConvenios( _this.currentConfigXp );
+					$("#lista_convenios").html(htmlListaConvenios);
+					$('.btn-eliminar-convenio').click( actionEliminarConvenio);
+					$('.btn-editar-convenio').click( actionEditarConvenio);
+				});
+				$('.btn-add-convenio').click( function (e) {
+					e.preventDefault();
+					$('#configuracion-algoritmo').html('');
+					var settings = {
+					};
+					_this.configuracionConvenio(settings);
+				});
 				$('.openConfigConvenios').click( function (e) {
 					e.preventDefault();
+					var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
+					var settings = {};
+					if( currentIndexAlgoritmo != '' ) {
+						_this.currentConfigXp =  _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp;
+					}
+					else {
+						_this.currentConfigXp = {};
+					}
+					$('#ListConfigConvenios').modal('toggle');
 				} );
 			},
+			contextListaAlgoritmos: {},
 			init: function() {
 				var _this = this;
+				Handlebars.registerPartial('formRegletasTemplate', $('#form-regletas-template').html());
+				Handlebars.registerPartial('formGradualTemplate', $('#form-gradual-template').html());
 				var sourceListaAlgoritmos = $("#lista-algoritmos-template").html();
 				var templateListaAlgoritmos = Handlebars.compile(sourceListaAlgoritmos);
 				var contextListaAlgoritmos = {
@@ -376,6 +496,7 @@
 							keyWordXP: 'nicoquispe',
 							l1iXP: 'a',
 							l2iXP: 'f',
+							convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
 						},
 						ll: {
 							inverseLL: true,
@@ -391,6 +512,7 @@
 								keyWordXP: 'nicoqussispe',
 								l1iXP: 'a',
 								l2iXP: 'f',
+								convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
 							},
 							ll: {
 								inverseLL: true,
@@ -434,27 +556,31 @@
 						}
 					}]
 				};
-				var htmlListaAlgoritmos = templateListaAlgoritmos(contextListaAlgoritmos);
+				_this.contextListaAlgoritmos = contextListaAlgoritmos;
+				var htmlListaAlgoritmos = templateListaAlgoritmos(_this.contextListaAlgoritmos);
 				$("#lista_algoritmos").html(htmlListaAlgoritmos);
 				var actionEditarAlgoritmo = function ( e ) {
 					e.preventDefault();
 					$('#configuracion-algoritmo').html('');
 					var index = $(this).data('index');
-					if ( contextListaAlgoritmos.algoritmos[index] != null ) {
-						_this.configuracionAlgoritmo(Object.assign({isCard: false, showTitle: true}, contextListaAlgoritmos.algoritmos[index]) );
+					if ( _this.contextListaAlgoritmos.algoritmos[index] != null ) {
+						_this.configuracionAlgoritmo(Object.assign({currentIndexAlgoritmo: index, isCard: false, showTitle: true}, _this.contextListaAlgoritmos.algoritmos[index]) );
 					}
 				};
 
 				$('.btn-editar-algoritmo').click( actionEditarAlgoritmo );
 				var actionEliminarAlgoritmo = function ( e ) {
 					e.preventDefault();
-					var index = $(this).data('index');
-					if ( contextListaAlgoritmos.algoritmos[index] != null ) {
-						delete contextListaAlgoritmos.algoritmos.splice(index, 1);
-						htmlListaAlgoritmos = templateListaAlgoritmos(contextListaAlgoritmos);
-						$("#lista_algoritmos").html(htmlListaAlgoritmos);
-						$('.btn-eliminar-algoritmo').click( actionEliminarAlgoritmo );
-						$('.btn-editar-algoritmo').click( actionEditarAlgoritmo );
+					var r = confirm("¿Seguro que desea eliminar el algoritmo?");
+					if (r == true) {
+						var index = $(this).data('index');
+						if ( _this.contextListaAlgoritmos.algoritmos[index] != null ) {
+							_this.contextListaAlgoritmos.algoritmos.splice(index, 1);
+							htmlListaAlgoritmos = templateListaAlgoritmos(_this.contextListaAlgoritmos);
+							$("#lista_algoritmos").html(htmlListaAlgoritmos);
+							$('.btn-eliminar-algoritmo').click( actionEliminarAlgoritmo );
+							$('.btn-editar-algoritmo').click( actionEditarAlgoritmo );
+						}
 					}
 				}
 				$('.btn-eliminar-algoritmo').click( actionEliminarAlgoritmo );
@@ -485,8 +611,7 @@
 				localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));
 			}
 		},
-		
-		'password': {
+		'user': {
 			encrypt: function() {
 
 			},
@@ -497,38 +622,18 @@
 		
 			},
 			get: function() {
-				JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));
+				return JSON.parse( Sage.utils.desencriptarSetting( localStorage.getItem('user') ));
 			},
-			set: function() {
-				localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));
+			set: function( data ) {
+				localStorage.setItem('user', Sage.utils.encriptarSetting( JSON.stringify( data )));
 			}
 		}
 	};
 
- 	var letters = 'abcdefghijklmnñopqrstuvwxyz';
-	var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
- 	var numbers = '0123456789';
- 	var mathematicalOperators = '+-*/';
- 	var punctuationMarks = '.,;:\'"()[]{}¿?¡!-_';
-	var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + ' ';
-	abc = letters;
-	var abcArray = abc.split('');
-	var keyWord = 'nico quispe';
-	//var alfabetoDesordenador = nombredeaplicacion.utils.sort(abcArray, keyWord, '46327', '3', '4');
-	//var XP = nombredeaplicacion.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '2');
-	//var LL = nombredeaplicacion.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '3');
-	//var textoEncriptado = nombredeaplicacion.gradual.encrypt('hola', XP, LL);
-	//var textoDesencriptado = nombredeaplicacion.gradual.decrypt(textoEncriptado.join(''), XP, LL); 
-	//console.log(alfabetoDesordenador);
-	//console.log(XP);
-	//console.log(LL);
-	//console.log(textoEncriptado);
-	//console.log(textoDesencriptado);
-
 	//console.log('----------------------');
 	//var convenioConfig = [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}];
-	//var textoEncriptado2 = nombredeaplicacion.regletas.encrypt('hola', XP, LL, 'a', 'c', convenioConfig );
-	//var textoDesencriptado2 = nombredeaplicacion.regletas.decrypt(textoEncriptado2.join(''), XP, LL, 'a', 'c', convenioConfig); 
+	//var textoEncriptado2 = Sage.regletas.encrypt('hola', XP, LL, 'a', 'c', convenioConfig );
+	//var textoDesencriptado2 = Sage.regletas.decrypt(textoEncriptado2.join(''), XP, LL, 'a', 'c', convenioConfig); 
 	//console.log(textoEncriptado2);
 	//console.log(textoDesencriptado2);
 
