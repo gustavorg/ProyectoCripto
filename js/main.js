@@ -11,6 +11,20 @@
  * ======================================================================== */
 
 (function($) {
+	document.addEventListener("DOMContentLoaded", function() {
+		var elements = document.getElementsByTagName("INPUT");
+		for (var i = 0; i < elements.length; i++) {
+			elements[i].oninvalid = function(e) {
+				e.target.setCustomValidity("");
+				if (!e.target.validity.valid) {
+					e.target.setCustomValidity("El campo es obligatorio");
+				}
+			};
+			elements[i].oninput = function(e) {
+				e.target.setCustomValidity("");
+			};
+		}
+	});
 	var Sage = {
 		'common': {
 			init: function() {
@@ -34,7 +48,88 @@
 						"%": lvalue % rvalue
 					}[operator];
 				});
-				Sage.user.set({"username":"admin","password":"P@@sw0rd"});
+				if ( localStorage.getItem('user') == null ) {
+					Sage.user.set({"username":"admin","password":"P@@sw0rd"});
+				}
+				if ( localStorage.getItem('settings') == null ) {
+					var contextListaAlgoritmos;
+					contextListaAlgoritmos = {
+						algoritmos: [{
+							nombre: 'Regleta',
+							tipo: 'regleta',
+							xp: {
+								inverseXP: true,
+								keyWordXP: 'nicoquispe',
+								l1iXP: 'a',
+								l2iXP: 'f',
+								convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
+							},
+							ll: {
+								inverseLL: true,
+								keyWordLL: 'gustavorivero',
+								numericalKeyLL: '235478',
+								n1iLL: '3',
+								n2iLL: '2',
+							},
+							metodos: {
+								tipo: 'gradual',
+								xp: {
+									inverseXP: true,
+									keyWordXP: 'nicoqussispe',
+									l1iXP: 'a',
+									l2iXP: 'f',
+									convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
+								},
+								ll: {
+									inverseLL: true,
+									keyWordLL: 'sfdgertegdfgs',
+									numericalKeyLL: '235478',
+									n1iLL: '3',
+									n2iLL: '2',
+								},
+							}
+						},{
+							nombre: 'Gradual',
+							tipo: 'gradual',
+							xp: {
+								inverseXP: true,
+								keyWordXP: 'dfgdfgerererhgf',
+								l1iXP: 'a',
+								l2iXP: 'f',
+								convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
+							},
+							ll: {
+								inverseLL: true,
+								keyWordLL: 'asdasdasd',
+								numericalKeyLL: '235478',
+								n1iLL: '3',
+								n2iLL: '2',
+							},
+							metodos: {
+								tipo: 'gradual',
+								xp: {
+									inverseXP: true,
+									keyWordXP: 'nicoqussispe',
+									l1iXP: 'a',
+									l2iXP: 'f',
+									convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
+								},
+								ll: {
+									inverseLL: true,
+									keyWordLL: 'sfdgertegdfgs',
+									numericalKeyLL: '235478',
+									n1iLL: '3',
+									n2iLL: '2',
+								},
+							}
+						}]
+					};
+					Sage.configuracion.set(contextListaAlgoritmos);
+					Sage.configuracion.contextListaAlgoritmos = contextListaAlgoritmos;
+				}
+				else {
+					Sage.configuracion.contextListaAlgoritmos = Sage.configuracion.get();
+				}
 			},
 			finalize: function() {
 
@@ -231,8 +326,6 @@
 					indiceIndicativo++;
 				}
 				//FIN ORDENAR INDICATIVO
-				console.log(nuevoXP);
-				console.log(nuevoLL);
 				var textEncrypt = [];
 				var saltos;
 				while( textEncrypt.length != plainText.length ){
@@ -390,6 +483,7 @@
 			},
 			currentConfigXp: {},
 			configuracionConvenio: function ( settings ) {
+				var _this = this;
 				$('#configuracion_convenio').html('');
 				var sourceConfiguracionConvenio = $("#configuracion-convenio-template").html();
 				var templateConfiguracionConvenio = Handlebars.compile(sourceConfiguracionConvenio);
@@ -402,6 +496,194 @@
 						$('#configuracion_convenio').html('');
 					}
 				} );
+				$('.btn-guardar-convenio').click( function (e) {
+					e.preventDefault();
+					var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
+					var currentIndexConvenio = $('#configuracion_convenio [name="currentIndexConvenio"]').val();
+					var configencriptacion = $('#lista_convenios [name="configencriptacion"]').val();
+
+					var letraConvenio = $('#letraConvenio').val();
+					var saltosConvenio = $('#saltosConvenio').val();
+					var direccionConvenio = $('#direccionConvenio').val();
+					if( currentIndexAlgoritmo ){
+						if( currentIndexConvenio ){
+							if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] != null ) {
+								if ( configencriptacion == 'false' ) {
+									if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[currentIndexConvenio] != null ){
+										_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[currentIndexConvenio] = {
+											letra: letraConvenio,
+											saltos: saltosConvenio,
+											direccion: direccionConvenio,
+										};
+										Sage.configuracion.set(_this.contextListaAlgoritmos);
+									}
+								}
+								else {
+									if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp.convenios[currentIndexConvenio] != null ){
+										_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp.convenios[currentIndexConvenio] = {
+											letra: letraConvenio,
+											saltos: saltosConvenio,
+											direccion: direccionConvenio,
+										};
+										Sage.configuracion.set(_this.contextListaAlgoritmos);
+									}
+								}
+							}
+						}
+						else {
+							if ( configencriptacion == 'false' ) {
+								_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios.push( {
+									letra: letraConvenio,
+									saltos: saltosConvenio,
+									direccion: direccionConvenio,
+								} );
+								Sage.configuracion.set(_this.contextListaAlgoritmos);
+							}
+							else {
+								_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp.convenios.push( {
+									letra: letraConvenio,
+									saltos: saltosConvenio,
+									direccion: direccionConvenio,
+								} );
+								Sage.configuracion.set(_this.contextListaAlgoritmos);
+							}
+						}
+					} else {
+						if ( configencriptacion == 'false' ) {
+							_this.contextListaAlgoritmos.algoritmos.push( {
+								xp: {
+									convenios: [{
+										letra: letraConvenio,
+										saltos: saltosConvenio,
+										direccion: direccionConvenio,
+									}]
+								},
+								ll: {},
+								metodos: {
+									xp: {
+										convenios: [],
+									},
+									ll: {},
+								}
+							} );
+							currentIndexAlgoritmo = _this.contextListaAlgoritmos.algoritmos.length-1;
+						}
+						else {
+							_this.contextListaAlgoritmos.algoritmos.push( {
+								xp: {
+									convenios: []
+								},
+								ll: {},
+								metodos: {
+									xp: {
+										convenios: [{
+											letra: letraConvenio,
+											saltos: saltosConvenio,
+											direccion: direccionConvenio,
+										}],
+									},
+									ll: {},
+								}
+							} );
+							currentIndexAlgoritmo = _this.contextListaAlgoritmos.algoritmos.length-1;
+						}
+						$('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val(currentIndexAlgoritmo);
+						Sage.configuracion.set(_this.contextListaAlgoritmos);
+					}
+					$('#configuracion_convenio').html('');
+					$("#lista_convenios").html('');
+					var sourceListaConvenios = $("#lista-convenios-template").html();
+					var templateListaConvenios = Handlebars.compile(sourceListaConvenios);
+					var htmlListaConvenios = templateListaConvenios( _this.currentConfigXp );
+
+					if ( configencriptacion == 'false' ) {
+						_this.currentConfigXp =  _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp;
+					}
+					else {
+						_this.currentConfigXp =  _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp;
+					}
+					htmlListaConvenios = templateListaConvenios(_this.currentConfigXp);
+					$("#lista_convenios").html(htmlListaConvenios);
+					$('.btn-eliminar-convenio').click( _this.actionEliminarConvenio );
+					$('.btn-editar-convenio').click( _this.actionEditarConvenio );
+				} );
+			},
+			actionEliminarConvenio: function ( e ) {
+				e.preventDefault();
+				var r = confirm("¿Seguro que desea eliminar el convenio?");
+				if (r == true) {
+					var index = $(this).data('index');
+					var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
+					var configencriptacion = $('#lista_convenios [name="configencriptacion"]').val();
+
+					if ( Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] != null ) {
+						if ( configencriptacion == 'false' ) {
+							if ( Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index] != null ){
+								Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios.splice(index, 1);
+								Sage.configuracion.currentConfigXp =  Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp;
+							}
+						}
+						else {
+							if ( Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp.convenios[index] != null ){
+								Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp.convenios.splice(index, 1);
+								Sage.configuracion.currentConfigXp =  Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp;
+							}
+						}
+						$("#configuracion_convenio").html('');
+						$("#lista_convenios").html('');
+						var sourceListaConvenios = $("#lista-convenios-template").html();
+						var templateListaConvenios = Handlebars.compile(sourceListaConvenios);
+						var htmlListaConvenios = templateListaConvenios( Sage.configuracion.currentConfigXp );
+						Sage.configuracion.set(Sage.configuracion.contextListaAlgoritmos);
+						$("#lista_convenios").html(htmlListaConvenios);
+						$('.btn-eliminar-convenio').click( Sage.configuracion.actionEliminarConvenio );
+						$('.btn-editar-convenio').click( Sage.configuracion.actionEditarConvenio );
+					}
+				}
+			},
+			actionEditarConvenio: function ( e ) {
+				e.preventDefault();
+				var index = $(this).data('index');
+				var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
+				var configencriptacion = $('#lista_convenios [name="configencriptacion"]').val();
+				if ( Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] != null ) {
+					if ( configencriptacion == 'false' ) {
+						if ( Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index] != null ){
+							Sage.configuracion.configuracionConvenio(Object.assign({currentIndexConvenio: index },Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index]) );
+						}
+					}
+					else {
+						if ( Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp.convenios[index] != null ){
+							Sage.configuracion.configuracionConvenio(Object.assign({currentIndexConvenio: index },Sage.configuracion.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp.convenios[index]) );
+						}	
+					}
+				}
+			},
+			actionEditarAlgoritmo: function ( e ) {
+				e.preventDefault();
+				$('#configuracion-algoritmo').html('');
+				var index = $(this).data('index');
+				if ( Sage.configuracion.contextListaAlgoritmos.algoritmos[index] != null ) {
+					Sage.configuracion.configuracionAlgoritmo(Object.assign({currentIndexAlgoritmo: index, isCard: false, showTitle: true}, Sage.configuracion.contextListaAlgoritmos.algoritmos[index]) );
+				}
+			},
+			actionEliminarAlgoritmo: function ( e ) {
+				e.preventDefault();
+				var r = confirm("¿Seguro que desea eliminar el algoritmo?");
+				if (r == true) {
+					var index = $(this).data('index');
+					if ( Sage.configuracion.contextListaAlgoritmos.algoritmos[index] != null ) {
+						$("#configuracion-algoritmo").html('');
+						Sage.configuracion.contextListaAlgoritmos.algoritmos.splice(index, 1);
+						var sourceListaAlgoritmos = $("#lista-algoritmos-template").html();
+						var templateListaAlgoritmos = Handlebars.compile(sourceListaAlgoritmos);
+						var htmlListaAlgoritmos = templateListaAlgoritmos(Sage.configuracion.contextListaAlgoritmos);
+						Sage.configuracion.set(Sage.configuracion.contextListaAlgoritmos);
+						$("#lista_algoritmos").html(htmlListaAlgoritmos);
+						$('.btn-eliminar-algoritmo').click( Sage.configuracion.actionEliminarAlgoritmo );
+						$('.btn-editar-algoritmo').click( Sage.configuracion.actionEditarAlgoritmo );
+					}
+				}
 			},
 			configuracionAlgoritmo: function ( settings ) {
 				var _this = this;
@@ -412,6 +694,119 @@
 				$("#configuracion-algoritmo").html(htmlConfiguracionAlgoritmo);
 				$('[name="metodoTipo"]').change( _this.actionMetodoTipo );
 				$('[name="metodoTipo"]').change();
+				$('.btn-guardar-configuracion-algoritmo').click( function (e) {
+					e.preventDefault();
+					var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
+
+					var inverseXP = $('#inverseXP:checked').length > 0;
+					var keyWordXP = $('#keyWordXP').val();
+					var l1iXP = $('#l1iXP').val();
+					var l2iXP = $('#l2iXP').val();
+					var inverseLL = $('#inverseLL:checked').length > 0;
+					var keyWordLL = $('#keyWordLL').val();
+					var numericalKeyLL = $('#numericalKeyLL').val();
+					var n1iLL = $('#n1iLL').val();
+					var n2iLL = $('#n2iLL').val();
+
+					var metodoTipo = $('[name="metodoTipo"]:checked').val();
+
+					var metodoinverseXP = $('#metodoinverseXP:checked').length > 0;
+					var metodokeyWordXP = $('#metodokeyWordXP').val();
+					var metodol1iXP = $('#metodol1iXP').val();
+					var metodol2iXP = $('#metodol2iXP').val();
+					var metodoinverseLL = $('#metodoinverseLL:checked').length > 0;
+					var metodokeyWordLL = $('#metodokeyWordLL').val();
+					var metodonumericalKeyLL = $('#metodonumericalKeyLL').val();
+					var metodon1iLL = $('#metodon1iLL').val();
+					var metodon2iLL = $('#metodon2iLL').val();
+
+					if( currentIndexAlgoritmo ){
+						if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] != null ) {
+							var _local = _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo];
+							_local.tipo = metodoTipo;
+							_local.nombre = metodoTipo == 'regleta' ? 'Regleta' : 'Gradual';
+							_local.xp = {
+								inverseXP: inverseXP,
+								keyWordXP: keyWordXP,
+								l1iXP: l1iXP,
+								l2iXP: l2iXP,
+								convenios: _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios,
+							};
+							_local.ll = {
+								inverseLL: inverseLL,
+								keyWordLL: keyWordLL,
+								numericalKeyLL: numericalKeyLL,
+								n1iLL: n1iLL,
+								n2iLL: n2iLL,
+							};
+							_local.metodos = {
+								tipo: metodoTipo,
+								xp: {
+									inverseXP: metodoinverseXP,
+									keyWordXP: metodokeyWordXP,
+									l1iXP: metodol1iXP,
+									l2iXP: metodol2iXP,
+									convenios: _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp.convenios,
+								},
+								ll: {
+									inverseLL: metodoinverseLL,
+									keyWordLL: metodokeyWordLL,
+									numericalKeyLL: metodonumericalKeyLL,
+									n1iLL: metodon1iLL,
+									n2iLL: metodon2iLL,
+								},
+							};
+							_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] = _local;
+							Sage.configuracion.set(_this.contextListaAlgoritmos);
+						}
+					}
+					else {
+						_this.contextListaAlgoritmos.algoritmos.push( {
+							nombre: metodoTipo == 'regleta' ? 'Regleta' : 'Gradual',
+							tipo: metodoTipo,
+							xp: {
+								inverseXP: inverseXP,
+								keyWordXP: keyWordXP,
+								l1iXP: l1iXP,
+								l2iXP: l2iXP,
+								convenios: [],
+							},
+							ll: {
+								inverseLL: inverseLL,
+								keyWordLL: keyWordLL,
+								numericalKeyLL: numericalKeyLL,
+								n1iLL: n1iLL,
+								n2iLL: n2iLL,
+							},
+							metodos: {
+								tipo: metodoTipo,
+								xp: {
+									inverseXP: metodoinverseXP,
+									keyWordXP: metodokeyWordXP,
+									l1iXP: metodol1iXP,
+									l2iXP: metodol2iXP,
+									convenios: [],
+								},
+								ll: {
+									inverseLL: metodoinverseLL,
+									keyWordLL: metodokeyWordLL,
+									numericalKeyLL: metodonumericalKeyLL,
+									n1iLL: metodon1iLL,
+									n2iLL: metodon2iLL,
+								},
+							}
+						} );
+						Sage.configuracion.set(_this.contextListaAlgoritmos);
+					}
+					$("#configuracion-algoritmo").html('');
+					var sourceListaAlgoritmos = $("#lista-algoritmos-template").html();
+					var templateListaAlgoritmos = Handlebars.compile(sourceListaAlgoritmos);
+					var htmlListaAlgoritmos = templateListaAlgoritmos(Sage.configuracion.contextListaAlgoritmos);
+					$("#lista_algoritmos").html(htmlListaAlgoritmos);
+					$('.btn-eliminar-algoritmo').click( Sage.configuracion.actionEliminarAlgoritmo );
+					$('.btn-editar-algoritmo').click( Sage.configuracion.actionEditarAlgoritmo );
+
+				} );
 				$('.btn-cancelar-configuracion-algoritmo').click( function (e) {
 					e.preventDefault();
 					var r = confirm("¿Seguro que desea cancelar la configuración?");
@@ -419,63 +814,45 @@
 						$("#configuracion-algoritmo").html('');
 					}
 				} );
-				var actionEditarConvenio = function ( e ) {
-					e.preventDefault();
-					var index = $(this).data('index');
-					var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
-					if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] != null ) {
-						if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index] != null ){
-							_this.configuracionConvenio(_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index]);
-						}
-					}
-				} ;
-				var actionEliminarConvenio = function ( e ) {
-					e.preventDefault();
-					var r = confirm("¿Seguro que desea eliminar el convenio?");
-					if (r == true) {
-						var index = $(this).data('index');
-						var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
-						if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo] != null ) {
-							if ( _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios[index] != null ){
-								$("#lista_convenios").html('');
-								var sourceListaConvenios = $("#lista-convenios-template").html();
-								var templateListaConvenios = Handlebars.compile(sourceListaConvenios);
-								var htmlListaConvenios = templateListaConvenios( _this.currentConfigXp );
-								_this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios.splice(index, 1);
-								_this.currentConfigXp =  _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp;
-								htmlListaConvenios = templateListaConvenios(_this.currentConfigXp);
-								$("#lista_convenios").html(htmlListaConvenios);
-								$('.btn-eliminar-convenio').click( actionEliminarConvenio );
-								$('.btn-editar-convenio').click( actionEditarConvenio );
-							}
-						}
-					}
-				} ;
 				$('#ListConfigConvenios').on('show.bs.modal', function (event) {
 					$("#lista_convenios").html('');
 					var sourceListaConvenios = $("#lista-convenios-template").html();
 					var templateListaConvenios = Handlebars.compile(sourceListaConvenios);
 					var htmlListaConvenios = templateListaConvenios( _this.currentConfigXp );
 					$("#lista_convenios").html(htmlListaConvenios);
-					$('.btn-eliminar-convenio').click( actionEliminarConvenio);
-					$('.btn-editar-convenio').click( actionEditarConvenio);
+					$('.btn-eliminar-convenio').click( _this.actionEliminarConvenio );
+					$('.btn-editar-convenio').click( _this.actionEditarConvenio );
 				});
 				$('.btn-add-convenio').click( function (e) {
 					e.preventDefault();
-					$('#configuracion-algoritmo').html('');
+					$('#configuracion_convenio').html('');
 					var settings = {
 					};
 					_this.configuracionConvenio(settings);
 				});
 				$('.openConfigConvenios').click( function (e) {
 					e.preventDefault();
+					var configencriptacion = $(this).data('configencriptacion');
 					var currentIndexAlgoritmo = $('#configuracion-algoritmo [name="currentIndexAlgoritmo"]').val();
 					var settings = {};
 					if( currentIndexAlgoritmo != '' ) {
 						_this.currentConfigXp =  _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp;
+						if( configencriptacion != '' ) {
+							_this.currentConfigXp =  _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].metodos.xp;
+							_this.currentConfigXp.configencriptacion = 'true';
+						}
+						else {
+							_this.currentConfigXp.configencriptacion = 'false';
+						}
 					}
 					else {
 						_this.currentConfigXp = {};
+						if( configencriptacion != '' ) {
+							_this.currentConfigXp.configencriptacion = 'true';
+						}
+						else {
+							_this.currentConfigXp.configencriptacion = 'false';
+						}
 					}
 					$('#ListConfigConvenios').modal('toggle');
 				} );
@@ -487,103 +864,11 @@
 				Handlebars.registerPartial('formGradualTemplate', $('#form-gradual-template').html());
 				var sourceListaAlgoritmos = $("#lista-algoritmos-template").html();
 				var templateListaAlgoritmos = Handlebars.compile(sourceListaAlgoritmos);
-				var contextListaAlgoritmos = {
-					algoritmos: [{
-						nombre: 'Regleta',
-						tipo: 'regleta',
-						xp: {
-							inverseXP: true,
-							keyWordXP: 'nicoquispe',
-							l1iXP: 'a',
-							l2iXP: 'f',
-							convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
-						},
-						ll: {
-							inverseLL: true,
-							keyWordLL: 'gustavorivero',
-							numericalKeyLL: '235478',
-							n1iLL: '3',
-							n2iLL: '2',
-						},
-						metodos: {
-							tipo: 'gradual',
-							xp: {
-								inverseXP: true,
-								keyWordXP: 'nicoqussispe',
-								l1iXP: 'a',
-								l2iXP: 'f',
-								convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
-							},
-							ll: {
-								inverseLL: true,
-								keyWordLL: 'sfdgertegdfgs',
-								numericalKeyLL: '235478',
-								n1iLL: '3',
-								n2iLL: '2',
-							},
-						}
-					},{
-						nombre: 'Gradual',
-						tipo: 'gradual',
-						xp: {
-							inverseXP: true,
-							keyWordXP: 'dfgdfgerererhgf',
-							l1iXP: 'a',
-							l2iXP: 'f',
-						},
-						ll: {
-							inverseLL: true,
-							keyWordLL: 'asdasdasd',
-							numericalKeyLL: '235478',
-							n1iLL: '3',
-							n2iLL: '2',
-						},
-						metodos: {
-							tipo: 'gradual',
-							xp: {
-								inverseXP: true,
-								keyWordXP: 'nicoqussispe',
-								l1iXP: 'a',
-								l2iXP: 'f',
-							},
-							ll: {
-								inverseLL: true,
-								keyWordLL: 'sfdgertegdfgs',
-								numericalKeyLL: '235478',
-								n1iLL: '3',
-								n2iLL: '2',
-							},
-						}
-					}]
-				};
-				_this.contextListaAlgoritmos = contextListaAlgoritmos;
 				var htmlListaAlgoritmos = templateListaAlgoritmos(_this.contextListaAlgoritmos);
 				$("#lista_algoritmos").html(htmlListaAlgoritmos);
-				var actionEditarAlgoritmo = function ( e ) {
-					e.preventDefault();
-					$('#configuracion-algoritmo').html('');
-					var index = $(this).data('index');
-					if ( _this.contextListaAlgoritmos.algoritmos[index] != null ) {
-						_this.configuracionAlgoritmo(Object.assign({currentIndexAlgoritmo: index, isCard: false, showTitle: true}, _this.contextListaAlgoritmos.algoritmos[index]) );
-					}
-				};
 
-				$('.btn-editar-algoritmo').click( actionEditarAlgoritmo );
-				var actionEliminarAlgoritmo = function ( e ) {
-					e.preventDefault();
-					var r = confirm("¿Seguro que desea eliminar el algoritmo?");
-					if (r == true) {
-						var index = $(this).data('index');
-						if ( _this.contextListaAlgoritmos.algoritmos[index] != null ) {
-							_this.contextListaAlgoritmos.algoritmos.splice(index, 1);
-							htmlListaAlgoritmos = templateListaAlgoritmos(_this.contextListaAlgoritmos);
-							$("#lista_algoritmos").html(htmlListaAlgoritmos);
-							$('.btn-eliminar-algoritmo').click( actionEliminarAlgoritmo );
-							$('.btn-editar-algoritmo').click( actionEditarAlgoritmo );
-						}
-					}
-				}
-				$('.btn-eliminar-algoritmo').click( actionEliminarAlgoritmo );
+				$('.btn-editar-algoritmo').click( Sage.configuracion.actionEditarAlgoritmo );
+				$('.btn-eliminar-algoritmo').click( Sage.configuracion.actionEliminarAlgoritmo );
 				$('.btn-add-algoritmo').click( function ( e ) {
 					e.preventDefault();
 					$('#configuracion-algoritmo').html('');
@@ -605,10 +890,10 @@
 				
 			},
 			get: function() {
-				JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));
+				return JSON.parse( Sage.utils.desencriptarSetting( localStorage.getItem('settings') ));
 			},
-			set: function() {
-				localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));
+			set: function( data ) {
+				localStorage.setItem('settings', Sage.utils.encriptarSetting( JSON.stringify( data )));
 			}
 		},
 		'user': {

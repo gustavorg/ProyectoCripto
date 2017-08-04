@@ -115,22 +115,26 @@
 			</div>
 		</div>
 		<script id="configuracion-convenio-template" type="text/x-handlebars-template">
+			<input name="currentIndexConvenio" value="{{currentIndexConvenio}}" type="hidden">
 			<div class="form-group row">
 				<label class="col-7 col-form-label">Caracter</label>
 				<div class="col-5">
-					<input class="form-control" type="text" value="{{letra}}">
+					<input class="form-control" type="text" name="letraConvenio" id="letraConvenio"  value="{{letra}}">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label class="col-7 col-form-label">Salto</label>
 				<div class="col-5">
-					<input class="form-control" type="number" min="1" max="9" value="{{saltos}}">
+					<input class="form-control" type="number" min="1" max="9" name="saltosConvenio" id="saltosConvenio" value="{{saltos}}">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="example-email-input" class="col-7 col-form-label">Dirección</label>
 				<div class="col-5">
-					<input class="form-control" type="text" value="{{direccion}}">
+					<select class="form-control" required="" name="direccionConvenio" id="direccionConvenio">
+						<option {{#if_eq direccion 'izquierda'}} selected {{/if_eq}} value="izquierda">Izquierda</option>
+						<option {{#if_eq direccion 'derecha'}} selected {{/if_eq}} value="derecha">Derecha</option>
+					</select>
 				</div>
 			</div>
 			<div class="text-center">
@@ -138,10 +142,11 @@
 			</div>
 		</script>
 		<script id="lista-convenios-template" type="text/x-handlebars-template">
+			<input name="configencriptacion" value="{{configencriptacion}}" type="hidden">
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>L</th>
+						<th>C</th>
 						<th>S</th>
 						<th>D</th>
 						<th>Acciones</th>
@@ -191,7 +196,7 @@
 						<label class="col-5 col-form-label">Inverso</label>
 						<div class="col-4">
 							<label class="custom-control custom-checkbox">
-								<input type="checkbox" {{#if xp.inverseXP}}checked{{/if}} name="inverseXP" class="custom-control-input">
+								<input type="checkbox" {{#if xp.inverseXP}}checked{{/if}} name="inverseXP" id="{{#unless showTitle}}metodo{{/unless}}inverseXP" class="custom-control-input">
 								<span class="custom-control-indicator"></span>
 							</label>
 						</div>
@@ -199,24 +204,24 @@
 					<div class="form-group row">
 						<label class="col-5 col-form-label">Palabra Clave</label>
 						<div class="col-7">
-							<input type="text" class="form-control" name="keyWordXP" id="keyWordXP" value="{{xp.keyWordXP}}">
+							<input type="text" class="form-control" name="keyWordXP" id="{{#unless showTitle}}metodo{{/unless}}keyWordXP" value="{{xp.keyWordXP}}">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-5 col-form-label">#1 Indicativo</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="l1iXP" id="l1iXP" value="{{xp.l1iXP}}">
+							<input class="form-control" type="text" name="l1iXP" id="{{#unless showTitle}}metodo{{/unless}}l1iXP" value="{{xp.l1iXP}}">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-5 col-form-label">#2 Indicativo</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="l2iXP" id="l2iXP" value="{{xp.l2iXP}}">
+							<input class="form-control" type="text" name="l2iXP" id="{{#unless showTitle}}metodo{{/unless}}l2iXP" value="{{xp.l2iXP}}">
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-12">
-							<button type='button' class="btn btn-primary openConfigConvenios" >Configuración de Convenios</button>
+							<button type='button' data-configencriptacion{{#unless showTitle}}="1"{{else}}="0"{{/unless}} class="btn btn-primary openConfigConvenios" >Configuración de Convenios</button>
 						</div>
 					</div>
 					{{#if isCard}}
