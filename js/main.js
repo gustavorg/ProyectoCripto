@@ -54,6 +54,13 @@
 				if ( localStorage.getItem('settings') == null ) {
 					var contextListaAlgoritmos;
 					contextListaAlgoritmos = {
+						base: {
+							inverseLL: true,
+							keyWordLL: 'ToolsNGCrypt',
+							numericalKeyLL: '537892',
+							n1iLL: '3',
+							n2iLL: '2',
+						},
 						algoritmos: [{
 							nombre: 'Regleta',
 							tipo: 'regleta',
@@ -877,6 +884,24 @@
 						showTitle: true,
 					};
 					_this.configuracionAlgoritmo(settings);
+				} );
+
+				$('#baseinverseLL').prop('checked', _this.contextListaAlgoritmos.base.inverseLL);
+				$('#basekeyWordLL').val(_this.contextListaAlgoritmos.base.keyWordLL);
+				$('#basenumericalKeyLL').val(_this.contextListaAlgoritmos.base.numericalKeyLL);
+				$('#basen1iLL').val(_this.contextListaAlgoritmos.base.n1iLL);
+				$('#basen2iLL').val(_this.contextListaAlgoritmos.base.n2iLL);
+
+				$('.btn-guardar-base').click( function (e) {
+					e.preventDefault();
+					Sage.configuracion.contextListaAlgoritmos.base = {
+						inverseLL: $('#baseinverseLL:checked').length > 0,
+						keyWordLL: $('#basekeyWordLL').val(),
+						numericalKeyLL: $('#basenumericalKeyLL').val(),
+						n1iLL: $('#basen1iLL').val(),
+						n2iLL: $('#basen2iLL').val(),
+					};
+					Sage.configuracion.set(Sage.configuracion.contextListaAlgoritmos);
 				} );
 				//$('.btn-add-algoritmo').click();
 			},
