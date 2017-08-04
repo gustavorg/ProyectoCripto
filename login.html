@@ -4,7 +4,6 @@
         <title>Sistema Cripto</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="resources/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="css/estilo.css" rel="stylesheet">
     </head>
     <body class="align">
@@ -12,21 +11,25 @@
             <form v-on:submit.prevent='onSubmit' class="form login">
 
                 <div class="form__field">
-                <label for="login__username"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use></svg><span class="hidden">Username</span></label>
-                <input id="login__username" type="text" name="username" id='username' class="form__input" placeholder="Usuario" required>
+                <label for="username"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use></svg><span class="hidden">Username</span></label>
+                <input type="text" name="username" id='username' class="form__input" placeholder="Usuario" required>
                 </div>
 
                 <div class="form__field">
-                <label for="login__password"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#lock"></use></svg><span class="hidden">Password</span></label>
-                <input id="login__password" type="password" id="password" name="password" class="form__input" placeholder="Password" required>
+                <label for="password"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#lock"></use></svg><span class="hidden">Password</span></label>
+                <input type="password" id="password" name="password" class="form__input" placeholder="Password" required>
                 </div>
 
                 <div class="form__field">
                 <input type="button" id='btningresar' value="Ingresar">
                 </div>
-
             </form>
-                <div id='mensaje'></div>            
+                <br>            
+                <div id='contenedormensaje'>
+                    <div class='alert alert-danger' role='alert'><strong>Atención!</strong>
+                        <p id='mensaje'></p>
+                    </div>
+                </div>            
             
         </div>   
     
@@ -35,18 +38,25 @@
     </body>
     <script type="text/javascript" src='js/jquery-3.2.1.min.js' ></script>
     <script>
+        $('#contenedormensaje').hide();
         $('#btningresar').click(function(){
             var username = $('#username').val();
             var password = $('#password').val();
-
-            if(username != 'admin'){
-                $('#mensaje').html("<div class='alert alert-danger' role='alert'><strong>Atención!</strong>El usuario no existe.</div>")
-            }else if(password != '#Pa@@w0rd'){
-                
-            }
-            else{
-
-            }
+            var user = JSON.parse(localStorage.getItem('user'));
+            console.log("Usuario -> " + user.username + "  password ->" +  user.password );
+            console.log( user, password, password );
+            if(username == user.username && password != user.password){
+                 $('#contenedormensaje').show();
+                 $('#mensaje').text("");
+                 $('#mensaje').text("Por favor, ingrese su contraseña correctamente.");
+            }else if(username != user.username && password != user.password){
+                $('#contenedormensaje').show();
+                $('#mensaje').text("");
+                $('#mensaje').text("El usuario no existe.");                
+            }else if(username == user.username && password == user.password){
+                $('#contenedormensaje').hide();
+                window.location.href = "index.html";
+            }   
         });
     </script>
 
