@@ -4,7 +4,6 @@
         <title>Sistema Cripto</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="resources/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="css/estilo.css" rel="stylesheet">
     </head>
     <body class="align">
@@ -26,7 +25,12 @@
                 </div>
 
             </form>
-                <div id='mensaje'></div>            
+                <br>            
+                <div id='contenedormensaje'>
+                    <div class='alert alert-danger' role='alert'><strong>Atención!</strong>
+                        <p id='mensaje'></p>
+                    </div>
+                </div>            
             
         </div>   
     
@@ -35,18 +39,24 @@
     </body>
     <script type="text/javascript" src='js/jquery-3.2.1.min.js' ></script>
     <script>
+        $('#contenedormensaje').hide();
         $('#btningresar').click(function(){
             var username = $('#username').val();
             var password = $('#password').val();
-
-            if(username != 'admin'){
-                $('#mensaje').html("<div class='alert alert-danger' role='alert'><strong>Atención!</strong>El usuario no existe.</div>")
-            }else if(password != '#Pa@@w0rd'){
-                
-            }
-            else{
-
-            }
+            var user = JSON.parse(localStorage.getItem('user'));
+            alert("Usuario -> " + user.username + "  password ->" +  user.password );
+            if(username == user.username && password != user.password){
+                 $('#contenedormensaje').show();
+                 $('#mensaje').text("");
+                 $('#mensaje').text("Por favor, ingrese su contraseña correctamente.");
+            }else if(username != user.username && password != user.password){
+                $('#contenedormensaje').show();
+                $('#mensaje').text("");
+                $('#mensaje').text("El usuario no existe.");                
+            }else if(username == user.username && password == user.password){
+                $('#contenedormensaje').hide();
+                window.location.href = "index.html";
+            }   
         });
     </script>
 
