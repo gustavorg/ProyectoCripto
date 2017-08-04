@@ -30,92 +30,93 @@
 					</ul>
 				</div>
 				<div class='col-md-9'>
-					<section>
-						<h3>Configuración Base</h3>
-						<hr>
-						<form>
+					<h3>Configuración Base</h3>
+					<hr>
+					<div id="form_configuracion_base">
+						<div class="card">
+							<div class="card-block">
+								<div class="row">
+									<div class="col-12">
+										<ul class="list-inline text-center list-unstyled">
+											<li class="list-inline-item">
+												<label class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input">
+													<span class="custom-control-indicator"></span>
+													<span class="custom-control-description">Inverso</span>
+												</label>
+											</li>
+											<li class="list-inline-item">
+												<label for="clavenumerica">Clave Numérica</label>
+												<input type="text" class="form-control" id="clavenumerica">
+											</li>
+											<li class="list-inline-item">
+												<label for="ninitdoblea">Palabra Clave</label>
+												<input type="text" class="form-control" id="ninitdoblea">
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<ul class="list-inline text-center list-unstyled">
+											<li class="list-inline-item">
+												<label for="ninitgradual"># Inicial p.g.</label>
+												<input type="text" class="form-control" id="ninitgradual">
+											</li>
+											<li class="list-inline-item">
+												<label for="ninitdoblea"># Inicial d.a.</label>
+												<input type="text" class="form-control" id="ninitdoblea">
+											</li>
+											<li class="list-inline-item">
+												<button type="button" class="btn btn-success">Guardar</button>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" style="padding-top: 1em;">
+						<div class="col-md-6">
 							<div class="card">
 								<div class="card-block">
-									<div class="row">
-										<div class="col-12">
-											<ul class="list-inline text-center list-unstyled">
-												<li class="list-inline-item">
-													<label class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input">
-														<span class="custom-control-indicator"></span>
-														<span class="custom-control-description">Inverso</span>
-													</label>
-												</li>
-												<li class="list-inline-item">
-													<label for="clavenumerica">Clave Numérica</label>
-													<input type="text" class="form-control" id="clavenumerica">
-												</li>
-												<li class="list-inline-item">
-													<label for="ninitdoblea">Palabra Clave</label>
-													<input type="text" class="form-control" id="ninitdoblea">
-												</li>
-											</ul>
-										</div>
+									<div class="row" >
+										<h4 class="col-10">Algoritmos de Encriptamiento</h4>
+										<div class="col-2"><a href="#" class="btn btn-primary">+</a></div>
 									</div>
-									<div class="row">
-										<div class="col-12">
-											<ul class="list-inline text-center list-unstyled">
-												<li class="list-inline-item">
-													<label for="ninitgradual"># Inicial p.g.</label>
-													<input type="text" class="form-control" id="ninitgradual">
-												</li>
-												<li class="list-inline-item">
-													<label for="ninitdoblea"># Inicial d.a.</label>
-													<input type="text" class="form-control" id="ninitdoblea">
-												</li>
-												<li class="list-inline-item">
-													<button type="button" class="btn btn-success">Guardar</button>
-												</li>
-											</ul>
-										</div>
-									</div>
+									<hr>
+									<div id="lista_algoritmos"></div>
 								</div>
 							</div>
-							<div class="row" style="padding-top: 1em;">
-								<div class="col-md-6">
-									<div class="card">
-										<div class="card-block">
-											<div class="row" >
-												<h4 class="col-10">Algoritmos de Encriptamiento</h4>
-												<div class="col-2"><a href="#" class="btn btn-primary">+</a></div>
-											</div>
-											<hr>
-											<table class="table table-hover">
-												<thead>
-													<tr>
-														<th>#</th>
-														<th>Algoritmo</th>
-														<th>Acciones</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<th scope="row">1</th>
-														<td>Regleta</td>
-														<td><a class="btn-editar-algoritmo" href="#">Editar</a> <a class="btn-eliminar-algoritmo" href="#">Eliminar</a></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-								<div id="" class="col-md-6">
-									<!-- FORMULARIO REGLETA -->
-									<!-- FORMULARIO GRADUAL -->
-								</div>
-							</div>
+						</div>
+						<div id="configuracion-algoritmo" class="col-md-6">
+							<!-- FORMULARIO REGLETA -->
+							<!-- FORMULARIO GRADUAL -->
+						</div>
+					</div>
 				</div>
 			</div>
-			</form>
-			</section>
 		</div>
-		</div>
-		</div>
+		<script id="lista-algoritmos-template" type="text/x-handlebars-template">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Algoritmo</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each algoritmos}}
+						<tr>
+							<th scope="row">{{math @index "+" 1}}</th>
+							<td>{{nombre}}</td>
+							<td><a class="btn-editar-algoritmo" data-index="{{@index}}" href="#">Editar</a> <a class="btn-eliminar-algoritmo" data-index=">{{@index}}" href="#">Eliminar</a></td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</script>
 		<script id="form-gradual-template" type="text/x-handlebars-template">
 			<div class="card">
 				<div class="card-block">

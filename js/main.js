@@ -14,7 +14,18 @@
 	var Sage = {
 		'common': {
 			init: function() {
-
+				Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+					lvalue = parseFloat(lvalue);
+					rvalue = parseFloat(rvalue);
+						
+					return {
+						"+": lvalue + rvalue,
+						"-": lvalue - rvalue,
+						"*": lvalue * rvalue,
+						"/": lvalue / rvalue,
+						"%": lvalue % rvalue
+					}[operator];
+				});
 			},
 			finalize: function() {
 
@@ -22,10 +33,10 @@
 		},
 		'login': {
 			init: function() {
-				
+
 			},
 			finalize: function() {
-				
+
 			}
 		},
 		'utils': {
@@ -318,6 +329,19 @@
 		'configuracion': {
 			init: function() {
 				console.log(1);
+				var source   = $("#lista-algoritmos-template").html();
+				var template = Handlebars.compile(source);
+				var context = {
+					algoritmos: [{
+						nombre: 'Regleta'
+					},{
+						nombre: 'Gradual'
+					},{
+						nombre: 'Regleta'
+					}]
+				};
+				var htmlListaAlgoritmos = template(context);
+				$("#lista_algoritmos").html(htmlListaAlgoritmos);
 			},
 			finalize: function() {
 				console.log(this);
@@ -391,7 +415,6 @@
 			fire = func !== '';
 			fire = fire && namespace[func];
 			fire = fire && typeof namespace[func][funcname] === 'function';
-			console.log(func, funcname, fire);
 			if (fire) {
 				namespace[func][funcname](args);
 			}
