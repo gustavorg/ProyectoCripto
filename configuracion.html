@@ -1,357 +1,411 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<title>Encriptar</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/estilo2.css" rel="stylesheet">
-	</head>
-	<body class="configuracion">
-		<div class='container' style="width: 100%;">
-			<div class='row'>
-				<div class='col-md-3' style="background-color: #f5f5f5 !important;">
-					<ul class="nav flex-column" id='menu'>
-						<li class="nav-item">
-							<a class="nav-link active" href="index.html">Encriptar</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="desencriptar.html">Desencriptar</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="configuracion.html">Configuración</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="manual.pdf" target="_blank">Manual</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="login.html">Salir</a>
-						</li>
-					</ul>
-				</div>
-				<div class='col-md-9'>
-					<div id="form_configuracion_base">
-						<div class="card">
-							<div class="card-block">
-								<div class="row">
-									<div class="col-12">
-										<h3 class="text-center">Configuración Alfabeto Base</h3>
-										<hr>
-										<ul class="list-inline text-center list-unstyled">
-											<li class="list-inline-item">
-												<label class="custom-control custom-checkbox">
+
+<head>
+	<title>Encriptar</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/estilo2.css" rel="stylesheet">
+</head>
+
+<body class="configuracion">
+	<div class='container' style="width: 100%;">
+		<div class='row'>
+			<div class='col-md-3' style="background-color: #f5f5f5 !important;">
+				<ul class="nav flex-column" id='menu'>
+					<li class="nav-item">
+						<a class="nav-link active" href="index.html">Encriptar</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="desencriptar.html">Desencriptar</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="configuracion.html">Configuración</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="manual.pdf" target="_blank">Manual</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="login.html">Salir</a>
+					</li>
+				</ul>
+			</div>
+			<div class='col-md-9'>
+				<div id="form_configuracion_base">
+					<div class="card">
+						<div class="card-block">
+							<div class="row">
+								<div class="col-12">
+									<h3 class="text-center">Configuración Alfabeto Base</h3>
+									<hr>
+									<ul class="list-inline text-center list-unstyled">
+										<li class="list-inline-item">
+											<label class="custom-control custom-checkbox">
 													<input type="checkbox" name="baseinverseLL" id="baseinverseLL" class="custom-control-input">
 													<span class="custom-control-indicator"></span>
 													<span class="custom-control-description">Inverso</span>
 												</label>
-											</li>
-											<li class="list-inline-item">
-												<label for="clavenumerica">Clave Numérica</label>
-												<input type="text" name="basenumericalKeyLL" id="basenumericalKeyLL"  class="form-control">
-											</li>
-											<li class="list-inline-item">
-												<label for="ninitdoblea">Palabra Clave</label>
-												<input type="text" name="basekeyWordLL" id="basekeyWordLL" class="form-control">
-											</li>
-										</ul>
-									</div>
+										</li>
+										<li class="list-inline-item">
+											<label for="clavenumerica">Clave Numérica</label>
+											<input type="text" name="basenumericalKeyLL" id="basenumericalKeyLL"  minlength="4" maxlength="9" onkeypress="return validarSiNumero(event)"
+											 onchange="caracteres()"  class="form-control">
+										</li>
+										<li class="list-inline-item">
+											<label for="ninitdoblea">Palabra Clave</label>
+											<input type="text" name="basekeyWordLL" id="basekeyWordLL" minlength="4" onkeypress="return validarSiLetras(event)"  onchange="caracteres()"  class="form-control">
+										</li>
+									</ul>
 								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<ul class="list-inline text-center list-unstyled">
+										<li class="list-inline-item">
+											<label for="ninitgradual"># Inicial p.g.</label>
+											<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen1iLL" id="basen1iLL" maxlength="1" onkeypress="return validarSiClaveNumerica(event)" class="form-control">
+										</li>
+										<li class="list-inline-item">
+											<label for="ninitdoblea"># Inicial d.a.</label>
+											<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen2iLL" id="basen2iLL" maxlength="1" onkeypress="return validarSiClaveNumerica(event)" class="form-control">
+										</li>
+										<li class="list-inline-item">
+											<button type="button" class="btn btn-primary btn-guardar-base">Guardar</button>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" style="padding-top: 1em;">
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-block">
 								<div class="row">
-									<div class="col-12">
-										<ul class="list-inline text-center list-unstyled">
-											<li class="list-inline-item">
-												<label for="ninitgradual"># Inicial p.g.</label>
-												<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen1iLL" id="basen1iLL" class="form-control">
-											</li>
-											<li class="list-inline-item">
-												<label for="ninitdoblea"># Inicial d.a.</label>
-												<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen2iLL" id="basen2iLL" class="form-control">
-											</li>
-											<li class="list-inline-item">
-												<button type="button" class="btn btn-primary btn-guardar-base">Guardar</button>
-											</li>
-										</ul>
-									</div>
+									<h4 class="col-10">Algoritmos de Encriptamiento</h4>
+									<div class="col-2"><a href="#" class="btn btn-sm btn-primary btn-add-algoritmo">+</a></div>
 								</div>
+								<hr>
+								<div id="lista_algoritmos"></div>
 							</div>
 						</div>
 					</div>
-					<div class="row" style="padding-top: 1em;">
+					<div id="configuracion-algoritmo" class="col-md-6"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade bd-example-modal-lg" role="dialog" id="ListConfigConvenios">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="row">
 						<div class="col-md-6">
-							<div class="card">
-								<div class="card-block">
-									<div class="row" >
-										<h4 class="col-10">Algoritmos de Encriptamiento</h4>
-										<div class="col-2"><a href="#" class="btn btn-sm btn-primary btn-add-algoritmo">+</a></div>
-									</div>
-									<hr>
-									<div id="lista_algoritmos"></div>
-								</div>
+							<div class="row">
+								<h5 class="col-10">Convenios</h5>
+								<div class="col-2"><a href="#" class="btn btn-sm btn-primary btn-add-convenio">+</a></div>
 							</div>
+							<div id="lista_convenios"></div>
 						</div>
-						<div id="configuracion-algoritmo" class="col-md-6"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal fade bd-example-modal-lg" role="dialog" id="ListConfigConvenios" >
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="row" >
-							<div class="col-md-6">
-								<div class="row" >
-									<h5 class="col-10">Convenios</h5>
-									<div class="col-2"><a href="#" class="btn btn-sm btn-primary btn-add-convenio">+</a></div>
-								</div>
-								<div id="lista_convenios"></div>
-							</div>
-							<div class="col-md-6">
-								<div id="configuracion_convenio"></div>
-							</div>
+						<div class="col-md-6">
+							<div id="configuracion_convenio"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<script id="configuracion-convenio-template" type="text/x-handlebars-template">
-			<input name="currentIndexConvenio" value="{{currentIndexConvenio}}" type="hidden">
-			<div class="form-group row">
-				<label class="col-7 col-form-label">Caracter</label>
-				<div class="col-5">
-					<input class="form-control" type="text" name="letraConvenio" id="letraConvenio"  value="{{letra}}">
-				</div>
+	</div>
+	<script id="configuracion-convenio-template" type="text/x-handlebars-template">
+		<input name="currentIndexConvenio" value="{{currentIndexConvenio}}" type="hidden">
+		<div class="form-group row">
+			<label class="col-7 col-form-label">Caracter</label>
+			<div class="col-5">
+				<input class="form-control" type="text" name="letraConvenio" id="letraConvenio" value="{{letra}}">
 			</div>
-			<div class="form-group row">
-				<label class="col-7 col-form-label">Salto</label>
-				<div class="col-5">
-					<input class="form-control" type="number" min="1" max="9" name="saltosConvenio" id="saltosConvenio" value="{{saltos}}">
-				</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-7 col-form-label">Salto</label>
+			<div class="col-5">
+				<input class="form-control" type="number" min="1" max="9" name="saltosConvenio" id="saltosConvenio" value="{{saltos}}">
 			</div>
-			<div class="form-group row">
-				<label for="example-email-input" class="col-7 col-form-label">Dirección</label>
-				<div class="col-5">
-					<select class="form-control" required="" name="direccionConvenio" id="direccionConvenio">
+		</div>
+		<div class="form-group row">
+			<label for="example-email-input" class="col-7 col-form-label">Dirección</label>
+			<div class="col-5">
+				<select class="form-control" required="" name="direccionConvenio" id="direccionConvenio">
 						<option {{#if_eq direccion 'izquierda'}} selected {{/if_eq}} value="izquierda">Izquierda</option>
 						<option {{#if_eq direccion 'derecha'}} selected {{/if_eq}} value="derecha">Derecha</option>
 					</select>
-				</div>
 			</div>
-			<div class="text-center">
-				<a href=# class="btn btn-primary btn-guardar-convenio">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-convenio">Cancelar</a>
-			</div>
-		</script>
-		<script id="lista-convenios-template" type="text/x-handlebars-template">
-			<input name="configencriptacion" value="{{configencriptacion}}" type="hidden">
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>C</th>
-						<th>S</th>
-						<th>D</th>
-						<th>Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-					{{#each convenios}}
-						<tr>
-							<th>{{letra}}</th>
-							<td>{{saltos}}</td>
-							<td>{{direccion}}</td>
-							<td><a class="btn-editar-convenio" data-index="{{@index}}" href="#">Editar</a> <a class="btn-eliminar-convenio" data-index="{{@index}}" href="#">Eliminar</a></td>
-						</tr>
-					{{/each}}
-				</tbody>
-			</table>
-		</script>
-		<script id="lista-algoritmos-template" type="text/x-handlebars-template">
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Algoritmo</th>
-						<th>Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-					{{#each algoritmos}}
-						<tr>
-							<th scope="row">{{math @index "+" 1}}</th>
-							<td>{{nombre}}</td>
-							<td><a class="btn-editar-algoritmo" data-index="{{@index}}" href="#">Editar</a> <a class="btn-eliminar-algoritmo" data-index="{{@index}}" href="#">Eliminar</a></td>
-						</tr>
-					{{/each}}
-				</tbody>
-			</table>
-		</script>
-		<script id="form-regletas-template" type="text/x-handlebars-template">
-			{{#if isCard}}
-			<div class="card">
-				<div class="card-block">
-			{{/if}}
-					{{#if showTitle}}
-						<h4 class="title_form text-center">Configuración XP</h4>
-					{{/if}}
-					<div class="form-group row">
-						<label class="col-5 col-form-label">Inverso</label>
-						<div class="col-4">
-							<label class="custom-control custom-checkbox">
+		</div>
+		<div class="text-center">
+			<a href=# class="btn btn-primary btn-guardar-convenio">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-convenio">Cancelar</a>
+		</div>
+	</script>
+	<script id="lista-convenios-template" type="text/x-handlebars-template">
+		<input name="configencriptacion" value="{{configencriptacion}}" type="hidden">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>C</th>
+					<th>S</th>
+					<th>D</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each convenios}}
+				<tr>
+					<th>{{letra}}</th>
+					<td>{{saltos}}</td>
+					<td>{{direccion}}</td>
+					<td><a class="btn-editar-convenio" data-index="{{@index}}" href="#">Editar</a> <a class="btn-eliminar-convenio" data-index="{{@index}}"
+						 href="#">Eliminar</a></td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</script>
+	<script id="lista-algoritmos-template" type="text/x-handlebars-template">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Algoritmo</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each algoritmos}}
+				<tr>
+					<th scope="row">{{math @index "+" 1}}</th>
+					<td>{{nombre}}</td>
+					<td><a class="btn-editar-algoritmo" data-index="{{@index}}" href="#">Editar</a> <a class="btn-eliminar-algoritmo" data-index="{{@index}}"
+						 href="#">Eliminar</a></td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</script>
+	<script id="form-regletas-template" type="text/x-handlebars-template">
+		{{#if isCard}}
+		<div class="card">
+			<div class="card-block">
+				{{/if}} {{#if showTitle}}
+				<h4 class="title_form text-center">Configuración XP</h4>
+				{{/if}}
+				<div class="form-group row">
+					<label class="col-5 col-form-label">Inverso</label>
+					<div class="col-4">
+						<label class="custom-control custom-checkbox">
 								<input type="checkbox" {{#if xp.inverseXP}}checked{{/if}} name="inverseXP" id="{{#unless showTitle}}metodo{{/unless}}inverseXP" class="custom-control-input">
 								<span class="custom-control-indicator"></span>
 							</label>
-						</div>
 					</div>
-					<div class="form-group row">
-						<label class="col-5 col-form-label">Palabra Clave</label>
-						<div class="col-7">
-							<input type="text" class="form-control" name="keyWordXP" id="{{#unless showTitle}}metodo{{/unless}}keyWordXP" value="{{xp.keyWordXP}}">
-						</div>
-					</div>
-					{{#if showTitle}}
-						<div class="form-group row">
-							<label class="col-5 col-form-label">Clave Numérica</label>
-							<div class="col-7">
-								<input type="text" class="form-control" name="numericalKeyXP" id="{{#unless showTitle}}metodo{{/unless}}numericalKeyXP" value="{{xp.numericalKeyXP}}">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-5 col-form-label"># Inicial p.g.</label>
-							<div class="col-3">
-								<input class="form-control" type="text" name="n1iXP" id="{{#unless showTitle}}metodo{{/unless}}n1iXP" value="{{xp.n1iXP}}">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-5 col-form-label"># Inicial d.a.</label>
-							<div class="col-3">
-								<input class="form-control" type="text" name="n2iXP" id="{{#unless showTitle}}metodo{{/unless}}n2iXP" value="{{xp.n2iXP}}">
-							</div>
-						</div>
-					{{/if}}
-					{{#unless showTitle}}
-						<div class="form-group row">
-							<label class="col-5 col-form-label">#1 Indicativo</label>
-							<div class="col-3">
-								<input class="form-control" type="text" name="l1iXP" id="{{#unless showTitle}}metodo{{/unless}}l1iXP" value="{{xp.l1iXP}}">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-5 col-form-label">#2 Indicativo</label>
-							<div class="col-3">
-								<input class="form-control" type="text" name="l2iXP" id="{{#unless showTitle}}metodo{{/unless}}l2iXP" value="{{xp.l2iXP}}">
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-12">
-								<button type='button' data-configencriptacion{{#unless showTitle}}="1"{{else}}="0"{{/unless}} class="btn btn-primary openConfigConvenios" >Configuración de Convenios</button>
-							</div>
-						</div>
-					{{/unless}}
-					{{#if isCard}}
-					<div class="text-center">
-						<a href=# class="btn btn-primary btn-guardar-configuracion-xp">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-xp">Cancelar</a>
-					</div>
-					{{/if}}
-			{{#if isCard}}
 				</div>
+				<div class="form-group row">
+					<label class="col-5 col-form-label">Palabra Clave</label>
+					<div class="col-7">
+						<input type="text" class="form-control" name="keyWordXP" id="{{#unless showTitle}}metodo{{/unless}}keyWordXP" value="{{xp.keyWordXP}}">
+					</div>
+				</div>
+				{{#if showTitle}}
+				<div class="form-group row">
+					<label class="col-5 col-form-label">Clave Numérica</label>
+					<div class="col-7">
+						<input type="text" class="form-control" name="numericalKeyXP" id="{{#unless showTitle}}metodo{{/unless}}numericalKeyXP" value="{{xp.numericalKeyXP}}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-5 col-form-label"># Inicial p.g.</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="n1iXP" id="{{#unless showTitle}}metodo{{/unless}}n1iXP" value="{{xp.n1iXP}}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-5 col-form-label"># Inicial d.a.</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="n2iXP" id="{{#unless showTitle}}metodo{{/unless}}n2iXP" value="{{xp.n2iXP}}">
+					</div>
+				</div>
+				{{/if}} {{#unless showTitle}}
+				<div class="form-group row">
+					<label class="col-5 col-form-label">#1 Indicativo</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="l1iXP" id="{{#unless showTitle}}metodo{{/unless}}l1iXP" value="{{xp.l1iXP}}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-5 col-form-label">#2 Indicativo</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="l2iXP" id="{{#unless showTitle}}metodo{{/unless}}l2iXP" value="{{xp.l2iXP}}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-12">
+						<button type='button' data-configencriptacion{{#unless showTitle}}="1" {{else}}="0" {{/unless}} class="btn btn-primary openConfigConvenios">Configuración de Convenios</button>
+					</div>
+				</div>
+				{{/unless}} {{#if isCard}}
+				<div class="text-center">
+					<a href=# class="btn btn-primary btn-guardar-configuracion-xp">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-xp">Cancelar</a>
+				</div>
+				{{/if}} {{#if isCard}}
 			</div>
-			{{/if}}
-		</script>
-		<script id="form-gradual-template" type="text/x-handlebars-template">
-			{{#if isCard}}
-			<div class="card">
-				<div class="card-block">
-			{{/if}}
-					{{#if showTitle}}
-						<h4 class="title_form text-center">Configuración LL</h4>
-					{{/if}}
-					<div class="form-group row">
-						<label class="col-5 col-form-label">Inverso</label>
-						<div class="col-4">
-							<label class="custom-control custom-checkbox">
+		</div>
+		{{/if}}
+	</script>
+	<script id="form-gradual-template" type="text/x-handlebars-template">
+		{{#if isCard}}
+		<div class="card">
+			<div class="card-block">
+				{{/if}} {{#if showTitle}}
+				<h4 class="title_form text-center">Configuración LL</h4>
+				{{/if}}
+				<div class="form-group row">
+					<label class="col-5 col-form-label">Inverso</label>
+					<div class="col-4">
+						<label class="custom-control custom-checkbox">
 								<input type="checkbox" {{#if ll.inverseLL}}checked{{/if}} name="inverseLL" id="{{#unless showTitle}}metodo{{/unless}}inverseLL" class="custom-control-input">
 								<span class="custom-control-indicator"></span>
 							</label>
-						</div>
 					</div>
-					<div class="form-group row">
-						<label class="col-5 col-form-label">Palabra Clave</label>
-						<div class="col-7">
-							<input type="text" class="form-control" name="keyWordLL" id="{{#unless showTitle}}metodo{{/unless}}keyWordLL" value="{{ll.keyWordLL}}">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-5 col-form-label">Clave Numérica</label>
-						<div class="col-7">
-							<input type="text" class="form-control" name="numericalKeyLL" id="{{#unless showTitle}}metodo{{/unless}}numericalKeyLL" value="{{ll.numericalKeyLL}}">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-5 col-form-label"># Inicial p.g.</label>
-						<div class="col-3">
-							<input class="form-control" type="text" name="n1iLL" id="{{#unless showTitle}}metodo{{/unless}}n1iLL" value="{{ll.n1iLL}}">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-5 col-form-label"># Inicial d.a.</label>
-						<div class="col-3">
-							<input class="form-control" type="text" name="n2iLL" id="{{#unless showTitle}}metodo{{/unless}}n2iLL" value="{{ll.n2iLL}}">
-						</div>
-					</div>
-					{{#if isCard}}
-					<div class="text-center">
-						<a href=# class="btn btn-primary btn-guardar-configuracion-ll">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-ll">Cancelar</a>
-					</div>
-					{{/if}}
-			{{#if isCard}}
 				</div>
+				<div class="form-group row">
+					<label class="col-5 col-form-label">Palabra Clave</label>
+					<div class="col-7">
+						<input type="text" class="form-control" name="keyWordLL" id="{{#unless showTitle}}metodo{{/unless}}keyWordLL" value="{{ll.keyWordLL}}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-5 col-form-label">Clave Numérica</label>
+					<div class="col-7">
+						<input type="text" class="form-control" name="numericalKeyLL" id="{{#unless showTitle}}metodo{{/unless}}numericalKeyLL" value="{{ll.numericalKeyLL}}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-5 col-form-label"># Inicial p.g.</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="n1iLL" id="{{#unless showTitle}}metodo{{/unless}}n1iLL" value="{{ll.n1iLL}}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-5 col-form-label"># Inicial d.a.</label>
+					<div class="col-3">
+						<input class="form-control" type="text" name="n2iLL" id="{{#unless showTitle}}metodo{{/unless}}n2iLL" value="{{ll.n2iLL}}">
+					</div>
+				</div>
+				{{#if isCard}}
+				<div class="text-center">
+					<a href=# class="btn btn-primary btn-guardar-configuracion-ll">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-ll">Cancelar</a>
+				</div>
+				{{/if}} {{#if isCard}}
 			</div>
-			{{/if}}
-		</script>
-		<script id="configuracion-algoritmo-template" type="text/x-handlebars-template">
-			<div class="card">
-				<div class="card-block">
-					<input name="currentIndexAlgoritmo" value="{{currentIndexAlgoritmo}}" type="hidden">
-					{{> formRegletasTemplate}}
-					<hr>
-					{{> formGradualTemplate}}
-					<hr>
-					{{#with metodos}}
-						<h4 class="title_form text-center">Configuración de método de encriptación</h4>
-							<div class="form-group row">
-							<label class="col-5 col-form-label">Tipo</label>
-							<div class="col-4">
-								<div class="custom-controls-stacked">
-									<label class="custom-control custom-radio">
+		</div>
+		{{/if}}
+	</script>
+	<script id="configuracion-algoritmo-template" type="text/x-handlebars-template">
+		<div class="card">
+			<div class="card-block">
+				<input name="currentIndexAlgoritmo" value="{{currentIndexAlgoritmo}}" type="hidden"> {{> formRegletasTemplate}}
+				<hr> {{> formGradualTemplate}}
+				<hr> {{#with metodos}}
+				<h4 class="title_form text-center">Configuración de método de encriptación</h4>
+				<div class="form-group row">
+					<label class="col-5 col-form-label">Tipo</label>
+					<div class="col-4">
+						<div class="custom-controls-stacked">
+							<label class="custom-control custom-radio">
 										<input name="metodoTipo" value="regleta" {{#if_eq tipo 'regleta'}}checked{{/if_eq}} type="radio" class="custom-control-input">
 										<span class="custom-control-indicator"></span>
 										<span class="custom-control-description">Regleta</span>
 									</label>
-									<label class="custom-control custom-radio">
+							<label class="custom-control custom-radio">
 										<input name="metodoTipo" value="gradual" {{#if_eq tipo 'gradual'}}checked{{/if_eq}} type="radio" class="custom-control-input">
 										<span class="custom-control-indicator"></span>
 										<span class="custom-control-description">Gradual</span>
 									</label>
-								</div>
-							</div>
 						</div>
-						<div id="details_form_regleta" {{#if_eq tipo 'regleta'}} style="display: block;" {{/if_eq}}>
-							{{> formRegletasTemplate}}
-						</div>
-						<div id="details_form_gradual" {{#if_eq tipo 'gradual'}} style="display: block;" {{/if_eq}}>
-							{{> formGradualTemplate}}
-						</div>
-					{{/with}}
-					<hr>
-					<div class="text-center">
-						<a href=# class="btn btn-primary btn-guardar-configuracion-algoritmo">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-algoritmo">Cancelar</a>
 					</div>
 				</div>
+				<div id="details_form_regleta" {{#if_eq tipo 'regleta'}} style="display: block;" {{/if_eq}}>
+					{{> formRegletasTemplate}}
+				</div>
+				<div id="details_form_gradual" {{#if_eq tipo 'gradual'}} style="display: block;" {{/if_eq}}>
+					{{> formGradualTemplate}}
+				</div>
+				{{/with}}
+				<hr>
+				<div class="text-center">
+					<a href=# class="btn btn-primary btn-guardar-configuracion-algoritmo">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-algoritmo">Cancelar</a>
+				</div>
 			</div>
-		</script>
-		<script type="text/javascript" src='js/is.min.js'></script>
-		<script type="text/javascript" src='js/handlebars.js'></script>
-		<script type="text/javascript" src='js/jquery-3.2.1.min.js'></script>
-		<script type="text/javascript" src='js/bootstrap.min.js'></script>
-		<script type="text/javascript" src='js/main.js'></script>
-	</body>
+		</div>
+	</script>
+	<script type="text/javascript" src='js/is.min.js'></script>
+	<script type="text/javascript" src='js/handlebars.js'></script>
+	<script type="text/javascript" src='js/jquery-3.2.1.min.js'></script>
+	<script type="text/javascript" src='js/bootstrap.min.js'></script>
+	<script type="text/javascript" src='js/main.js'></script>
+	<script>
+		function validarSiNumero(e) {
+			var input = $('#basenumericalKeyLL').val();
+			var key = window.event ? e.keyCode : e.which;
+			var caracter = String.fromCharCode(e.keyCode);
+
+			if ((48 <= key && key <= 57) || (key == 0) || (key == 8)) {
+				if (input.search(caracter) != -1) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				alert("No se acepta letras ni caracteres especiales");
+				return false;
+
+			}
+		}
+		function caracteres() {
+			var input = $('#basenumericalKeyLL').val();
+			var input2 = $('#basekeyWordLL').val();
+			if (input.length < 4 || input2.length < 4) {
+				alert('Se requiere 4 caracteres como mínimo.');
+				$('#save').attr('disabled', 'disabled');
+			} else {
+				$('#save').removeAttr('disabled');;
+			}
+		}
+
+		function validarSiLetras(e) {
+			var input = $('#basekeyWordLL').val();
+			var key = window.event ? e.keyCode : e.which;
+
+			if ((65 <= key && key <= 90) || (97 <= key) && (key <= 122)) {
+				return true;
+			} else {
+				alert("No se acepta números ni caracteres especiales");
+				return false;
+			}
+		}
+
+		function validarSiClaveNumerica(e) {
+			var inputclavenumerica = $('#basenumericalKeyLL').val();
+			var key = window.event ? e.keyCode : e.which;
+			var caracter = String.fromCharCode(e.keyCode);
+
+			if ((48 <= key && key <= 57) || (key == 0) || (key == 8)) {
+				if (inputclavenumerica.search(caracter) != -1) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+	</script>
+</body>
+
 </html>
