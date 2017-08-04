@@ -7,7 +7,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/estilo2.css" rel="stylesheet">
     </head>
-    <body>
+    <body class="desencriptar">
         <div class='container' style="width: 100%;">
             <div class='row'>
                 <div class='col-md-3' style="background-color: #f5f5f5 !important;">
@@ -48,15 +48,5 @@
         <script type="text/javascript" src='js/jquery-3.2.1.min.js'></script> 
         <script type="text/javascript" src='js/main.js'></script>
         <script type="text/javascript" src='js/copyme.js'></script>
-        <script>
-            $('#cripto').change(function(){
-                $('#mensaje').val( $('#cripto').val());
-            });
-        
-
-            $('#mensaje').click(function(){
-                    $('#mensaje').copyme();
-            });
-        </script>
     </body>
 </html>

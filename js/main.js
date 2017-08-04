@@ -67,9 +67,10 @@
 							xp: {
 								inverseXP: true,
 								keyWordXP: 'nicoquispe',
-								l1iXP: 'a',
-								l2iXP: 'f',
-								convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
+								numericalKeyXP: '235478',
+								n1iXP: '8',
+								n2iXP: '4',
+								//convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
 							},
 							ll: {
 								inverseLL: true,
@@ -82,7 +83,7 @@
 								tipo: 'gradual',
 								xp: {
 									inverseXP: true,
-									keyWordXP: 'nicoqussispe',
+									keyWordXP: 'nicoquispe',
 									l1iXP: 'a',
 									l2iXP: 'f',
 									convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
@@ -101,9 +102,10 @@
 							xp: {
 								inverseXP: true,
 								keyWordXP: 'dfgdfgerererhgf',
-								l1iXP: 'a',
-								l2iXP: 'f',
-								convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
+								numericalKeyXP: '235478',
+								n1iXP: '8',
+								n2iXP: '4',
+								//convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
 							},
 							ll: {
 								inverseLL: true,
@@ -166,6 +168,60 @@
 			}
 		},
 		'utils': {
+			multipleEncriptacion: function (plainText) {
+				var letters = 'abcdefghijklmnñopqrstuvwxyz';
+				var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+			 	var numbers = '0123456789';
+			 	var mathematicalOperators = '=<>+-*/';
+			 	var punctuationMarks = '.,;:"()[]{}¿?¡!|_';
+			 	var otherSimbols = '#@%&';
+				var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + otherSimbols + ' ';
+				abc = letters + Upperletters;
+				console.log( abc.length );
+				var settingsBase = Sage.configuracion.contextListaAlgoritmos.base;
+				var abcArray = abc.split('');
+				var alfabetoDesordenador = Sage.utils.sort(abcArray, settingsBase.keyWordLL, settingsBase.numericalKeyLL, settingsBase.n1iLL, settingsBase.n2iLL);
+				var listXPLL = [];
+				Sage.configuracion.contextListaAlgoritmos.algoritmos.forEach( function ( algoritmo, index ) {
+					if( index == 0 ){
+						listXPLL.push( {
+							tipo: algoritmo.tipo,
+							metodos: algoritmo.metodos,
+							xp: Sage.utils.sort(alfabetoDesordenador, algoritmo.xp.keyWordXP, algoritmo.xp.numericalKeyXP, algoritmo.xp.n1iXP, algoritmo.xp.n2iXP),
+							ll: Sage.utils.sort(alfabetoDesordenador, algoritmo.ll.keyWordLL, algoritmo.ll.numericalKeyLL, algoritmo.ll.n1iLL, algoritmo.ll.n2iLL),
+						} );
+					} else {
+						listXPLL.push( {
+							tipo: algoritmo.tipo,
+							metodos: algoritmo.metodos,
+							xp: Sage.utils.sort(listXPLL[index-1].xp, algoritmo.xp.keyWordXP, algoritmo.xp.numericalKeyXP, algoritmo.xp.n1iXP, algoritmo.xp.n2iXP),
+							ll: Sage.utils.sort(listXPLL[index-1].ll, algoritmo.ll.keyWordLL, algoritmo.ll.numericalKeyLL, algoritmo.ll.n1iLL, algoritmo.ll.n2iLL),
+						} );
+					}
+				} );
+				listXPLL.forEach( function ( item ) {
+					if ( item.tipo ==  'gradual' ) {
+						var keyWord = item.metodos.ll.keyWordLL;
+						var numericalKey = item.metodos.ll.numericalKeyLL;
+						var n1i = item.metodos.ll.n1iLL;
+						var n2i = item.metodos.ll.n2iLL;
+						var XP = Sage.utils.sort(item.xp, keyWord, numericalKey, n1i, n2i);
+						var LL = item.ll;
+						console.log( plainText );
+						plainText = Sage.gradual.encrypt( plainText , XP, LL).join('');
+					}
+					if ( item.tipo ==  'regleta' ) {
+						var keyWord = item.metodos.xp.keyWordXP;
+						var keyWordArray = keyWord.replace(/ /g, '').split('');
+						var XP  = Sage.utils.clearRepeat( keyWordArray.concat( item.xp ) );
+						var LL = item.ll;
+						console.log( plainText );
+						plainText = Sage.regletas.encrypt( plainText , XP, LL, item.metodos.xp.l1iXP, item.metodos.xp.l2iXP, item.metodos.xp.convenios).join('');
+					}
+				} );
+				console.log( listXPLL );
+				return plainText;
+			},
 			encriptarSetting: function ( plainText ) {
 			 	var letters = 'abcdefghijklmnñopqrstuvwxyz';
 				var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
@@ -205,6 +261,11 @@
 				return array.filter(function(item, pos, self) {
 					return self.indexOf(item) == pos;
 				});
+			},
+			sortRegleta: function (base, xp, ll, keyWord, l1i, l2i, convenios) {
+				var keyWordArray = keyWord.replace(/ /g, '').split('');
+				var uniqueCadenaArray = Sage.utils.clearRepeat( keyWordArray.concat( base ) );
+				return Sage.regletas.encrypt( uniqueCadenaArray.join(''), xp, ll, l1i, l2i, convenios );
 			},
 			sort: function(base, keyWord, numericalKey, n1i, n2i, convenios, init) {
 				try {
@@ -352,10 +413,10 @@
 						var indiceIndicativoAplicable = letrasafectadas.indexOf(buscarletra);
 						textEncrypt.push(nuevoXP[ index ]);
 						if ( indiceIndicativoAplicable != -1 ){
-							if(convenioConfig[indiceIndicativoAplicable].direccion == 'derecha'){ 
-								saltos = convenioConfig[indiceIndicativoAplicable].saltos * -1;
+							if(convenios[indiceIndicativoAplicable].direccion == 'derecha'){ 
+								saltos = convenios[indiceIndicativoAplicable].saltos * -1;
 							}else{
-								saltos = convenioConfig[indiceIndicativoAplicable].saltos;
+								saltos = convenios[indiceIndicativoAplicable].saltos;
 							}
 							movimientos = movimientos + saltos;
 						}
@@ -365,10 +426,10 @@
 						var indiceIndicativoAplicable = letrasafectadas.indexOf(buscarletra);
 						textEncrypt.push(nuevoXP[ index ]);
 						if ( indiceIndicativoAplicable != -1 ){
-							if(convenioConfig[indiceIndicativoAplicable].direccion == 'derecha'){ 
-								saltos = convenioConfig[indiceIndicativoAplicable].saltos * -1;
+							if(convenios[indiceIndicativoAplicable].direccion == 'derecha'){ 
+								saltos = convenios[indiceIndicativoAplicable].saltos * -1;
 							}else{
-								saltos = convenioConfig[indiceIndicativoAplicable].saltos;
+								saltos = convenios[indiceIndicativoAplicable].saltos;
 							}
 							movimientos = movimientos + saltos;
 						}
@@ -430,10 +491,10 @@
 						textEncrypt.push(letraDesencriptada);
 						var indiceIndicativoAplicable = letrasafectadas.indexOf(letraDesencriptada);
 						if ( indiceIndicativoAplicable != -1 ){
-							if(convenioConfig[indiceIndicativoAplicable].direccion == 'derecha'){ 
-								saltos = convenioConfig[indiceIndicativoAplicable].saltos;
+							if(convenios[indiceIndicativoAplicable].direccion == 'derecha'){ 
+								saltos = convenios[indiceIndicativoAplicable].saltos;
 							}else{
-								saltos = convenioConfig[indiceIndicativoAplicable].saltos * -1;
+								saltos = convenios[indiceIndicativoAplicable].saltos * -1;
 							}
 							movimientos = movimientos + saltos;
 						}
@@ -444,10 +505,10 @@
 						textEncrypt.push(letraDesencriptada);
 						var indiceIndicativoAplicable = letrasafectadas.indexOf(letraDesencriptada);
 						if ( indiceIndicativoAplicable != -1 ){
-							if(convenioConfig[indiceIndicativoAplicable].direccion == 'derecha'){ 
-								saltos = convenioConfig[indiceIndicativoAplicable].saltos;
+							if(convenios[indiceIndicativoAplicable].direccion == 'derecha'){ 
+								saltos = convenios[indiceIndicativoAplicable].saltos;
 							}else{
-								saltos = convenioConfig[indiceIndicativoAplicable].saltos * -1;
+								saltos = convenios[indiceIndicativoAplicable].saltos * -1;
 							}
 							movimientos = movimientos + saltos;
 						}
@@ -479,6 +540,16 @@
 					}
 				}
 				return textDecrypt;
+			}
+		},
+		'desencriptar': {
+			init: function () {
+				$('#cripto').change(function(){
+					$('#mensaje').val( Sage.utils.multipleEncriptacion($('#cripto').val()) );
+				});
+				$('#mensaje').click(function(){
+					$('#mensaje').copyme();
+				});
 			}
 		},
 		'configuracion': {
@@ -578,7 +649,7 @@
 						else {
 							_this.contextListaAlgoritmos.algoritmos.push( {
 								xp: {
-									convenios: []
+									//convenios: []
 								},
 								ll: {},
 								metodos: {
@@ -707,8 +778,9 @@
 
 					var inverseXP = $('#inverseXP:checked').length > 0;
 					var keyWordXP = $('#keyWordXP').val();
-					var l1iXP = $('#l1iXP').val();
-					var l2iXP = $('#l2iXP').val();
+					var numericalKeyXP = $('#numericalKeyXP').val();
+					var n1iXP = $('#n1iXP').val();
+					var n2iXP = $('#n2iXP').val();
 					var inverseLL = $('#inverseLL:checked').length > 0;
 					var keyWordLL = $('#keyWordLL').val();
 					var numericalKeyLL = $('#numericalKeyLL').val();
@@ -735,9 +807,10 @@
 							_local.xp = {
 								inverseXP: inverseXP,
 								keyWordXP: keyWordXP,
-								l1iXP: l1iXP,
-								l2iXP: l2iXP,
-								convenios: _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios,
+								numericalKeyXP: numericalKeyXP,
+								n1iXP: n1iXP,
+								n2iXP: n2iXP,
+								//convenios: _this.contextListaAlgoritmos.algoritmos[currentIndexAlgoritmo].xp.convenios,
 							};
 							_local.ll = {
 								inverseLL: inverseLL,
@@ -774,9 +847,10 @@
 							xp: {
 								inverseXP: inverseXP,
 								keyWordXP: keyWordXP,
-								l1iXP: l1iXP,
-								l2iXP: l2iXP,
-								convenios: [],
+								numericalKeyXP: numericalKeyXP,
+								n1iXP: n1iXP,
+								n2iXP: n2iXP,
+								//convenios: [],
 							},
 							ll: {
 								inverseLL: inverseLL,

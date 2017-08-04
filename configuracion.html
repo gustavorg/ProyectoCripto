@@ -30,13 +30,13 @@
 					</ul>
 				</div>
 				<div class='col-md-9'>
-					<h3>Configuración Base</h3>
-					<hr>
 					<div id="form_configuracion_base">
 						<div class="card">
 							<div class="card-block">
 								<div class="row">
 									<div class="col-12">
+										<h3 class="text-center">Configuración Alfabeto Base</h3>
+										<hr>
 										<ul class="list-inline text-center list-unstyled">
 											<li class="list-inline-item">
 												<label class="custom-control custom-checkbox">
@@ -61,11 +61,11 @@
 										<ul class="list-inline text-center list-unstyled">
 											<li class="list-inline-item">
 												<label for="ninitgradual"># Inicial p.g.</label>
-												<input type="text" name="basen1iLL" id="basen1iLL" class="form-control">
+												<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen1iLL" id="basen1iLL" class="form-control">
 											</li>
 											<li class="list-inline-item">
 												<label for="ninitdoblea"># Inicial d.a.</label>
-												<input type="text" name="basen2iLL" id="basen2iLL" class="form-control">
+												<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen2iLL" id="basen2iLL" class="form-control">
 											</li>
 											<li class="list-inline-item">
 												<button type="button" class="btn btn-primary btn-guardar-base">Guardar</button>
@@ -207,23 +207,45 @@
 							<input type="text" class="form-control" name="keyWordXP" id="{{#unless showTitle}}metodo{{/unless}}keyWordXP" value="{{xp.keyWordXP}}">
 						</div>
 					</div>
-					<div class="form-group row">
-						<label class="col-5 col-form-label">#1 Indicativo</label>
-						<div class="col-3">
-							<input class="form-control" type="text" name="l1iXP" id="{{#unless showTitle}}metodo{{/unless}}l1iXP" value="{{xp.l1iXP}}">
+					{{#if showTitle}}
+						<div class="form-group row">
+							<label class="col-5 col-form-label">Clave Numérica</label>
+							<div class="col-7">
+								<input type="text" class="form-control" name="numericalKeyXP" id="{{#unless showTitle}}metodo{{/unless}}numericalKeyXP" value="{{xp.numericalKeyXP}}">
+							</div>
 						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-5 col-form-label">#2 Indicativo</label>
-						<div class="col-3">
-							<input class="form-control" type="text" name="l2iXP" id="{{#unless showTitle}}metodo{{/unless}}l2iXP" value="{{xp.l2iXP}}">
+						<div class="form-group row">
+							<label class="col-5 col-form-label"># Inicial p.g.</label>
+							<div class="col-3">
+								<input class="form-control" type="text" name="n1iXP" id="{{#unless showTitle}}metodo{{/unless}}n1iXP" value="{{xp.n1iXP}}">
+							</div>
 						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-12">
-							<button type='button' data-configencriptacion{{#unless showTitle}}="1"{{else}}="0"{{/unless}} class="btn btn-primary openConfigConvenios" >Configuración de Convenios</button>
+						<div class="form-group row">
+							<label class="col-5 col-form-label"># Inicial d.a.</label>
+							<div class="col-3">
+								<input class="form-control" type="text" name="n2iXP" id="{{#unless showTitle}}metodo{{/unless}}n2iXP" value="{{xp.n2iXP}}">
+							</div>
 						</div>
-					</div>
+					{{/if}}
+					{{#unless showTitle}}
+						<div class="form-group row">
+							<label class="col-5 col-form-label">#1 Indicativo</label>
+							<div class="col-3">
+								<input class="form-control" type="text" name="l1iXP" id="{{#unless showTitle}}metodo{{/unless}}l1iXP" value="{{xp.l1iXP}}">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-5 col-form-label">#2 Indicativo</label>
+							<div class="col-3">
+								<input class="form-control" type="text" name="l2iXP" id="{{#unless showTitle}}metodo{{/unless}}l2iXP" value="{{xp.l2iXP}}">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-12">
+								<button type='button' data-configencriptacion{{#unless showTitle}}="1"{{else}}="0"{{/unless}} class="btn btn-primary openConfigConvenios" >Configuración de Convenios</button>
+							</div>
+						</div>
+					{{/unless}}
 					{{#if isCard}}
 					<div class="text-center">
 						<a href=# class="btn btn-primary btn-guardar-configuracion-xp">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-xp">Cancelar</a>
@@ -246,7 +268,7 @@
 						<label class="col-5 col-form-label">Inverso</label>
 						<div class="col-4">
 							<label class="custom-control custom-checkbox">
-								<input type="checkbox" {{#if ll.inverseLL}}checked{{/if}} name="inverseLL" id="inverseLL" class="custom-control-input">
+								<input type="checkbox" {{#if ll.inverseLL}}checked{{/if}} name="inverseLL" id="{{#unless showTitle}}metodo{{/unless}}inverseLL" class="custom-control-input">
 								<span class="custom-control-indicator"></span>
 							</label>
 						</div>
@@ -254,25 +276,25 @@
 					<div class="form-group row">
 						<label class="col-5 col-form-label">Palabra Clave</label>
 						<div class="col-7">
-							<input type="text" class="form-control" name="keyWordLL" id="keyWordLL" value="{{ll.keyWordLL}}">
+							<input type="text" class="form-control" name="keyWordLL" id="{{#unless showTitle}}metodo{{/unless}}keyWordLL" value="{{ll.keyWordLL}}">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-5 col-form-label">Clave Numérica</label>
 						<div class="col-7">
-							<input type="text" class="form-control" name="numericalKeyLL" id="numericalKeyLL" value="{{ll.numericalKeyLL}}">
+							<input type="text" class="form-control" name="numericalKeyLL" id="{{#unless showTitle}}metodo{{/unless}}numericalKeyLL" value="{{ll.numericalKeyLL}}">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-5 col-form-label"># Inicial p.g.</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="n1iLL" id="n1iLL" value="{{ll.n1iLL}}">
+							<input class="form-control" type="text" name="n1iLL" id="{{#unless showTitle}}metodo{{/unless}}n1iLL" value="{{ll.n1iLL}}">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-5 col-form-label"># Inicial d.a.</label>
 						<div class="col-3">
-							<input class="form-control" type="text" name="n2iLL" id="n2iLL" value="{{ll.n2iLL}}">
+							<input class="form-control" type="text" name="n2iLL" id="{{#unless showTitle}}metodo{{/unless}}n2iLL" value="{{ll.n2iLL}}">
 						</div>
 					</div>
 					{{#if isCard}}
