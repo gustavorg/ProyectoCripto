@@ -47,11 +47,11 @@
 											</li>
 											<li class="list-inline-item">
 												<label for="clavenumerica">Clave Numérica</label>
-												<input type="text" class="form-control" id="clavenumerica">
+												<input type="text" class="form-control">
 											</li>
 											<li class="list-inline-item">
 												<label for="ninitdoblea">Palabra Clave</label>
-												<input type="text" class="form-control" id="ninitdoblea">
+												<input type="text" class="form-control">
 											</li>
 										</ul>
 									</div>
@@ -61,11 +61,11 @@
 										<ul class="list-inline text-center list-unstyled">
 											<li class="list-inline-item">
 												<label for="ninitgradual"># Inicial p.g.</label>
-												<input type="text" class="form-control" id="ninitgradual">
+												<input type="text" class="form-control">
 											</li>
 											<li class="list-inline-item">
 												<label for="ninitdoblea"># Inicial d.a.</label>
-												<input type="text" class="form-control" id="ninitdoblea">
+												<input type="text" class="form-control">
 											</li>
 											<li class="list-inline-item">
 												<button type="button" class="btn btn-success">Guardar</button>
@@ -82,16 +82,75 @@
 								<div class="card-block">
 									<div class="row" >
 										<h4 class="col-10">Algoritmos de Encriptamiento</h4>
-										<div class="col-2"><a href="#" class="btn btn-primary">+</a></div>
+										<div class="col-2"><a href="#" class="btn btn-sm btn-primary btn-add-algoritmo">+</a></div>
 									</div>
 									<hr>
 									<div id="lista_algoritmos"></div>
 								</div>
 							</div>
 						</div>
-						<div id="configuracion-algoritmo" class="col-md-6">
-							<!-- FORMULARIO REGLETA -->
-							<!-- FORMULARIO GRADUAL -->
+						<div id="configuracion-algoritmo" class="col-md-6"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade bd-example-modal-lg" role="dialog" >
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class='container' style="width: 100%;">
+						<div class="row" style="padding: 31px;">
+							<div class="col-md-6">
+								<div class="row" style="height: 34px;">
+									<h5 class="col-10">Convenios</h5>
+									<div class="col-2"><a href="#" class="btn btn-sm btn-primary btn-add-convenio">+</a></div>
+								</div>
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>C</th>
+											<th>S</th>
+											<th>D</th>
+											<th>Acciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>A</th>
+											<td>3</td>
+											<td>I</td>
+											<td><a href="#">Editar</a> <a href="#">Eliminar</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-md-1" style='border-left: 1px solid black;max-width: 1px;'></div>
+							<div class="col-md-5">
+								<div class="form-group row">
+									<label class="col-7 col-form-label">Caracter</label>
+									<div class="col-5">
+										<input class="form-control" type="text" id="example-text-input">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-7 col-form-label">Salto</label>
+									<div class="col-5">
+										<input class="form-control" type="number" min="1" max="9">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="example-email-input" class="col-7 col-form-label">Dirección</label>
+									<div class="col-5">
+										<input class="form-control" type="email" id="example-email-input">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="example-email-input" class="col-7 col-form-label"></label>
+									<div class="col-5">
+										<button type="button" class="btn btn-success">Guardar</button>
+									</div>
+								</div>
+
+							</div>
 						</div>
 					</div>
 				</div>
@@ -111,156 +170,149 @@
 						<tr>
 							<th scope="row">{{math @index "+" 1}}</th>
 							<td>{{nombre}}</td>
-							<td><a class="btn-editar-algoritmo" data-index="{{@index}}" href="#">Editar</a> <a class="btn-eliminar-algoritmo" data-index=">{{@index}}" href="#">Eliminar</a></td>
+							<td><a class="btn-editar-algoritmo" data-index="{{@index}}" href="#">Editar</a> <a class="btn-eliminar-algoritmo" data-index="{{@index}}" href="#">Eliminar</a></td>
 						</tr>
 					{{/each}}
 				</tbody>
 			</table>
 		</script>
-		<script id="form-gradual-template" type="text/x-handlebars-template">
+		<script id="form-regletas-template" type="text/x-handlebars-template">
+			{{#if isCard}}
 			<div class="card">
 				<div class="card-block">
-					<h3 class="title_form text-center">Configuración XP</h3>
+			{{/if}}
+					{{#if showTitle}}
+						<h4 class="title_form text-center">Configuración XP</h4>
+					{{/if}}
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Inverso</label>
+						<label class="col-5 col-form-label">Inverso</label>
 						<div class="col-4">
 							<label class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input">
-							<span class="custom-control-indicator"></span>
+								<input type="checkbox" {{#if xp.inverseXP}}checked{{/if}} name="inverseXP" class="custom-control-input">
+								<span class="custom-control-indicator"></span>
 							</label>
 						</div>
-						<label for="example-text-input" class="col-2 col-form-label">Palabra Clave</label>
-						<div class="col-4">
-							<input type="text" class="form-control" id="ninitdoblea">
+					</div>
+					<div class="form-group row">
+						<label class="col-5 col-form-label">Palabra Clave</label>
+						<div class="col-7">
+							<input type="text" class="form-control" name="keyWordXP" id="keyWordXP" value="{{xp.keyWordXP}}">
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group row">
-								<label for="example-search-input" class="col-6 col-form-label">#1 Indicativo</label>
-								<div class="col-4">
-									<input class="form-control" type="text" id="example-search-input">
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group row">
-								<label for="example-email-input" class="col-6 col-form-label">#2 Indicativo</label>
-								<div class="col-4">
-									<input class="form-control" type="text" id="example-email-input">
-								</div>
-							</div>
+					<div class="form-group row">
+						<label class="col-5 col-form-label">#1 Indicativo</label>
+						<div class="col-3">
+							<input class="form-control" type="text" name="l1iXP" id="l1iXP" value="{{xp.l1iXP}}">
 						</div>
 					</div>
-					<button type='button' class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Configuración de Convenios</button>
-
-					<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-lg">
-							<div class="modal-content">
-								<div class='container' style="width: 100%;">
-									<div class="row" style="padding: 31px;">
-										<div class="col-md-6">
-											<div class="row" style="height: 34px;">
-												<h5 class="col-10">Convenios</h5>
-												<img src='img/add.svg' class="col-2">
-											</div>
-											<table class="table table-hover">
-												<thead>
-													<tr>
-														<th>C</th>
-														<th>S</th>
-														<th>D</th>
-														<th>Acciones</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<th>A</th>
-														<td>3</td>
-														<td>I</td>
-														<td><a href="#">Editar</a> <a href="#">Eliminar</a></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div class="col-md-1" style='border-left: 1px solid black;max-width: 1px;'></div>
-										<div class="col-md-5">
-											<div class="form-group row">
-												<label for="example-text-input" class="col-7 col-form-label">Caracter</label>
-												<div class="col-5">
-													<input class="form-control" type="text" id="example-text-input">
-												</div>
-											</div>
-											<div class="form-group row">
-												<label for="example-search-input" class="col-7 col-form-label">Salto</label>
-												<div class="col-5">
-													<input class="form-control" type="number" min="1" max="9">
-												</div>
-											</div>
-											<div class="form-group row">
-												<label for="example-email-input" class="col-7 col-form-label">Dirección</label>
-												<div class="col-5">
-													<input class="form-control" type="email" id="example-email-input">
-												</div>
-											</div>
-											<div class="form-group row">
-												<label for="example-email-input" class="col-7 col-form-label"></label>
-												<div class="col-5">
-													<button type="button" class="btn btn-success">Guardar</button>
-												</div>
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
+					<div class="form-group row">
+						<label class="col-5 col-form-label">#2 Indicativo</label>
+						<div class="col-3">
+							<input class="form-control" type="text" name="l2iXP" id="l2iXP" value="{{xp.l2iXP}}">
 						</div>
 					</div>
+					<div class="form-group row">
+						<div class="col-12">
+							<button type='button' class="btn btn-primary openConfigConvenios" >Configuración de Convenios</button>
+						</div>
+					</div>
+					{{#if isCard}}
+					<div class="text-center">
+						<a href=# class="btn btn-primary btn-guardar-configuracion-xp">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-xp">Cancelar</a>
+					</div>
+					{{/if}}
+			{{#if isCard}}
 				</div>
 			</div>
+			{{/if}}
 		</script>
 		<script id="form-gradual-template" type="text/x-handlebars-template">
+			{{#if isCard}}
 			<div class="card">
 				<div class="card-block">
-					<h3 class="title_form text-center">Configuración LL</h3>
+			{{/if}}
+					{{#if showTitle}}
+						<h4 class="title_form text-center">Configuración LL</h4>
+					{{/if}}
 					<div class="form-group row">
-						<label for="example-text-input" class="col-2 col-form-label">Inverso</label>
+						<label class="col-5 col-form-label">Inverso</label>
 						<div class="col-4">
 							<label class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input">
-							<span class="custom-control-indicator"></span>
+								<input type="checkbox" {{#if ll.inverseLL}}checked{{/if}} name="inverseLL" id="inverseLL" class="custom-control-input">
+								<span class="custom-control-indicator"></span>
 							</label>
 						</div>
-						<label for="example-text-input" class="col-2 col-form-label">Palabra Clave</label>
-						<div class="col-4">
-							<input type="text" class="form-control" id="ninitdoblea">
+					</div>
+					<div class="form-group row">
+						<label class="col-5 col-form-label">Palabra Clave</label>
+						<div class="col-7">
+							<input type="text" class="form-control" name="keyWordLL" id="keyWordLL" value="{{ll.keyWordLL}}">
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group row">
-								<label for="example-search-input" class="col-6 col-form-label"># Inicial p.g.</label>
-								<div class="col-4">
-									<input class="form-control" type="text" id="example-search-input">
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group row">
-								<label for="example-email-input" class="col-6 col-form-label"># Inicial d.a.</label>
-								<div class="col-4">
-									<input class="form-control" type="text" id="example-email-input">
-								</div>
-							</div>
+					<div class="form-group row">
+						<label class="col-5 col-form-label">Clave Numérica</label>
+						<div class="col-7">
+							<input type="text" class="form-control" name="numericalKeyLL" id="numericalKeyLL" value="{{ll.numericalKeyLL}}">
 						</div>
 					</div>
-					<div class="row">
-						<div class="form-group row">
-							<label for="example-search-input" class="col-6 col-form-label">Clave Numérica</label>
+					<div class="form-group row">
+						<label class="col-5 col-form-label"># Inicial p.g.</label>
+						<div class="col-3">
+							<input class="form-control" type="text" name="n1iLL" id="n1iLL" value="{{ll.n1iLL}}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-5 col-form-label"># Inicial d.a.</label>
+						<div class="col-3">
+							<input class="form-control" type="text" name="n2iLL" id="n2iLL" value="{{ll.n2iLL}}">
+						</div>
+					</div>
+					{{#if isCard}}
+					<div class="text-center">
+						<a href=# class="btn btn-primary btn-guardar-configuracion-ll">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-ll">Cancelar</a>
+					</div>
+					{{/if}}
+			{{#if isCard}}
+				</div>
+			</div>
+			{{/if}}
+		</script>
+		<script id="configuracion-algoritmo-template" type="text/x-handlebars-template">
+			<div class="card">
+				<div class="card-block">
+					{{> formRegletasTemplate}}
+					<hr>
+					{{> formGradualTemplate}}
+					<hr>
+					{{#with metodos}}
+						<h4 class="title_form text-center">Configuración de método de encriptación</h4>
+							<div class="form-group row">
+							<label class="col-5 col-form-label">Tipo</label>
 							<div class="col-4">
-								<input class="form-control" type="text" id="example-search-input">
+								<div class="custom-controls-stacked">
+									<label class="custom-control custom-radio">
+										<input name="metodoTipo" value="regleta" {{#if_eq tipo 'regleta'}}checked{{/if_eq}} type="radio" class="custom-control-input">
+										<span class="custom-control-indicator"></span>
+										<span class="custom-control-description">Regleta</span>
+									</label>
+									<label class="custom-control custom-radio">
+										<input name="metodoTipo" value="gradual" {{#if_eq tipo 'gradual'}}checked{{/if_eq}} type="radio" class="custom-control-input">
+										<span class="custom-control-indicator"></span>
+										<span class="custom-control-description">Gradual</span>
+									</label>
+								</div>
 							</div>
 						</div>
+						<div id="details_form_regleta" {{#if_eq tipo 'regleta'}} style="display: block;" {{/if_eq}}>
+							{{> formRegletasTemplate}}
+						</div>
+						<div id="details_form_gradual" {{#if_eq tipo 'gradual'}} style="display: block;" {{/if_eq}}>
+							{{> formGradualTemplate}}
+						</div>
+					{{/with}}
+					<hr>
+					<div class="text-center">
+						<a href=# class="btn btn-primary btn-guardar-configuracion-algoritmo">Guardar</a> <a href=# class="btn btn-secondary btn-cancelar-configuracion-algoritmo">Cancelar</a>
 					</div>
 				</div>
 			</div>

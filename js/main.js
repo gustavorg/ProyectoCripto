@@ -14,10 +14,20 @@
 	var Sage = {
 		'common': {
 			init: function() {
+				Handlebars.registerHelper('with', function(context, options) {
+					return options.fn(context);
+				});
+				Handlebars.registerHelper('if_eq', function(a, b, opts) {
+					if(a == b)
+						return opts.fn(this);
+					else
+						return opts.inverse(this);
+				});
+				Handlebars.registerPartial('formRegletasTemplate', $('#form-regletas-template').html());
+				Handlebars.registerPartial('formGradualTemplate', $('#form-gradual-template').html());
 				Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
 					lvalue = parseFloat(lvalue);
 					rvalue = parseFloat(rvalue);
-						
 					return {
 						"+": lvalue + rvalue,
 						"-": lvalue - rvalue,
@@ -69,8 +79,8 @@
 						var columns = numericalKey.split('').map(function(item) {
 							return parseInt(item, 10);
 						});
-						n1i =  parseInt(n1i, 10);
-						n2i =  parseInt(n2i, 10);
+						n1i = parseInt(n1i, 10);
+						n2i = parseInt(n2i, 10);
 						var cube = [];
 						var cubeSecond = [];
 						var _columns = columns.concat();
@@ -327,24 +337,139 @@
 			}
 		},
 		'configuracion': {
+			actionMetodoTipo: function () {
+				var metodoTipo = $('[name="metodoTipo"]:checked').val();
+				$('#details_form_regleta').fadeOut(0);
+				$('#details_form_gradual').fadeOut(0);
+				$('#details_form_' + metodoTipo ).fadeIn(0);
+			},
+			configuracionAlgoritmo: function ( settings ) {
+				var _this = this;
+				$("#configuracion-algoritmo").html('');
+				var sourceConfiguracionAlgoritmo = $("#configuracion-algoritmo-template").html();
+				var templateConfiguracionAlgoritmo = Handlebars.compile(sourceConfiguracionAlgoritmo);
+				var htmlConfiguracionAlgoritmo = templateConfiguracionAlgoritmo(settings);
+				$("#configuracion-algoritmo").html(htmlConfiguracionAlgoritmo);
+				$('[name="metodoTipo"]').change( _this.actionMetodoTipo );
+				$('[name="metodoTipo"]').change();
+				$('.btn-cancelar-configuracion-algoritmo').click( function (e) {
+					e.preventDefault();
+					var r = confirm("¿Seguro que desea cancelar la configuración?");
+					if (r == true) {
+						$("#configuracion-algoritmo").html('');
+					}
+				} );
+				$('.openConfigConvenios').click( function (e) {
+					e.preventDefault();
+				} );
+			},
 			init: function() {
-				console.log(1);
-				var source   = $("#lista-algoritmos-template").html();
-				var template = Handlebars.compile(source);
-				var context = {
+				var _this = this;
+				var sourceListaAlgoritmos = $("#lista-algoritmos-template").html();
+				var templateListaAlgoritmos = Handlebars.compile(sourceListaAlgoritmos);
+				var contextListaAlgoritmos = {
 					algoritmos: [{
-						nombre: 'Regleta'
+						nombre: 'Regleta',
+						tipo: 'regleta',
+						xp: {
+							inverseXP: true,
+							keyWordXP: 'nicoquispe',
+							l1iXP: 'a',
+							l2iXP: 'f',
+						},
+						ll: {
+							inverseLL: true,
+							keyWordLL: 'gustavorivero',
+							numericalKeyLL: '235478',
+							n1iLL: '3',
+							n2iLL: '2',
+						},
+						metodos: {
+							tipo: 'gradual',
+							xp: {
+								inverseXP: true,
+								keyWordXP: 'nicoqussispe',
+								l1iXP: 'a',
+								l2iXP: 'f',
+							},
+							ll: {
+								inverseLL: true,
+								keyWordLL: 'sfdgertegdfgs',
+								numericalKeyLL: '235478',
+								n1iLL: '3',
+								n2iLL: '2',
+							},
+						}
 					},{
-						nombre: 'Gradual'
-					},{
-						nombre: 'Regleta'
+						nombre: 'Gradual',
+						tipo: 'gradual',
+						xp: {
+							inverseXP: true,
+							keyWordXP: 'dfgdfgerererhgf',
+							l1iXP: 'a',
+							l2iXP: 'f',
+						},
+						ll: {
+							inverseLL: true,
+							keyWordLL: 'asdasdasd',
+							numericalKeyLL: '235478',
+							n1iLL: '3',
+							n2iLL: '2',
+						},
+						metodos: {
+							tipo: 'gradual',
+							xp: {
+								inverseXP: true,
+								keyWordXP: 'nicoqussispe',
+								l1iXP: 'a',
+								l2iXP: 'f',
+							},
+							ll: {
+								inverseLL: true,
+								keyWordLL: 'sfdgertegdfgs',
+								numericalKeyLL: '235478',
+								n1iLL: '3',
+								n2iLL: '2',
+							},
+						}
 					}]
 				};
-				var htmlListaAlgoritmos = template(context);
+				var htmlListaAlgoritmos = templateListaAlgoritmos(contextListaAlgoritmos);
 				$("#lista_algoritmos").html(htmlListaAlgoritmos);
+				var actionEditarAlgoritmo = function ( e ) {
+					e.preventDefault();
+					$('#configuracion-algoritmo').html('');
+					var index = $(this).data('index');
+					if ( contextListaAlgoritmos.algoritmos[index] != null ) {
+						_this.configuracionAlgoritmo(Object.assign({isCard: false, showTitle: true}, contextListaAlgoritmos.algoritmos[index]) );
+					}
+				};
+
+				$('.btn-editar-algoritmo').click( actionEditarAlgoritmo );
+				var actionEliminarAlgoritmo = function ( e ) {
+					e.preventDefault();
+					var index = $(this).data('index');
+					if ( contextListaAlgoritmos.algoritmos[index] != null ) {
+						delete contextListaAlgoritmos.algoritmos.splice(index, 1);
+						htmlListaAlgoritmos = templateListaAlgoritmos(contextListaAlgoritmos);
+						$("#lista_algoritmos").html(htmlListaAlgoritmos);
+						$('.btn-eliminar-algoritmo').click( actionEliminarAlgoritmo );
+						$('.btn-editar-algoritmo').click( actionEditarAlgoritmo );
+					}
+				}
+				$('.btn-eliminar-algoritmo').click( actionEliminarAlgoritmo );
+				$('.btn-add-algoritmo').click( function ( e ) {
+					e.preventDefault();
+					$('#configuracion-algoritmo').html('');
+					var settings = {
+						isCard: false,
+						showTitle: true,
+					};
+					_this.configuracionAlgoritmo(settings);
+				} );
+				//$('.btn-add-algoritmo').click();
 			},
 			finalize: function() {
-				console.log(this);
 			},
 
 			encrypt: function() {
@@ -354,10 +479,10 @@
 				
 			},
 			get: function() {
-				JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));							  
+				JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));
 			},
 			set: function() {
-				localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));   
+				localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));
 			}
 		},
 		
@@ -372,10 +497,10 @@
 		
 			},
 			get: function() {
-				JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));							  
+				JSON.parse( Utils.deencriptarSetting( localStorage.getItem('settings') ));
 			},
 			set: function() {
-				localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));   
+				localStorage.setItem('settings', Utils.encriptarSetting( JSON.stringify( {} )));
 			}
 		}
 	};

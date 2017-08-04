@@ -5,3 +5,13 @@
     align-items: center;
 }
 
+#details_form_regleta{
+	display: none;
+}
+#details_form_gradual{
+	display: none;
+}
+
+h4.title_form{
+    margin-bottom: 0.7em;
+}
