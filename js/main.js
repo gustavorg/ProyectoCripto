@@ -513,10 +513,11 @@
 					//	continue;
 					//}
 					var index = nuevoLL.indexOf(buscarletra) + movimientos;
+					console.log(movimientos, typeof movimientos);
 					if ( nuevoXP[index] == undefined ) {
 						index = index - nuevoLL.length;
 						while( index < 0 ){
-							index+= nuevoLL.length*2;
+							index+= nuevoLL.length;
 						}
 						while ( nuevoLL.length - 1  < index ){
 							index-= nuevoLL.length;
@@ -527,7 +528,7 @@
 							if(convenios[indiceIndicativoAplicable].direccion == 'derecha'){ 
 								saltos = convenios[indiceIndicativoAplicable].saltos * -1;
 							}else{
-								saltos = convenios[indiceIndicativoAplicable].saltos;
+								saltos = convenios[indiceIndicativoAplicable].saltos * 1;
 							}
 							movimientos = movimientos + saltos;
 						}
@@ -540,7 +541,7 @@
 							if(convenios[indiceIndicativoAplicable].direccion == 'derecha'){ 
 								saltos = convenios[indiceIndicativoAplicable].saltos * -1;
 							}else{
-								saltos = convenios[indiceIndicativoAplicable].saltos;
+								saltos = convenios[indiceIndicativoAplicable].saltos * 1;
 							}
 							movimientos = movimientos + saltos;
 						}
@@ -596,7 +597,7 @@
 					if ( nuevoXP[index] == undefined ) {
 						index = index - nuevoXP.length;
 						while( index < 0 ){
-							index+= nuevoXP.length*2;
+							index+= nuevoXP.length;
 						}
 						while ( nuevoLL.length - 1  < index ){
 							index-= nuevoLL.length;
@@ -606,7 +607,7 @@
 						var indiceIndicativoAplicable = letrasafectadas.indexOf(letraDesencriptada);
 						if ( indiceIndicativoAplicable != -1 ){
 							if(convenios[indiceIndicativoAplicable].direccion == 'derecha'){ 
-								saltos = convenios[indiceIndicativoAplicable].saltos;
+								saltos = convenios[indiceIndicativoAplicable].saltos * 1;
 							}else{
 								saltos = convenios[indiceIndicativoAplicable].saltos * -1;
 							}
@@ -620,7 +621,7 @@
 						var indiceIndicativoAplicable = letrasafectadas.indexOf(letraDesencriptada);
 						if ( indiceIndicativoAplicable != -1 ){
 							if(convenios[indiceIndicativoAplicable].direccion == 'derecha'){ 
-								saltos = convenios[indiceIndicativoAplicable].saltos;
+								saltos = convenios[indiceIndicativoAplicable].saltos * 1;
 							}else{
 								saltos = convenios[indiceIndicativoAplicable].saltos * -1;
 							}
