@@ -518,6 +518,9 @@
 						while( index < 0 ){
 							index+= nuevoLL.length*2;
 						}
+						while ( nuevoLL.length - 1  < index ){
+							index-= nuevoLL.length;
+						}
 						var indiceIndicativoAplicable = letrasafectadas.indexOf(buscarletra);
 						textEncrypt.push(nuevoXP[ index ]);
 						if ( indiceIndicativoAplicable != -1 ){
@@ -594,6 +597,9 @@
 						index = index - nuevoXP.length;
 						while( index < 0 ){
 							index+= nuevoXP.length*2;
+						}
+						while ( nuevoLL.length - 1  < index ){
+							index-= nuevoLL.length;
 						}
 						var letraDesencriptada = nuevoLL[ index ];
 						textEncrypt.push(letraDesencriptada);
