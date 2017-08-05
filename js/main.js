@@ -32,7 +32,7 @@
 	var punctuationMarks = '.,;:\'()[]{}¿?¡!|_';
 	var otherSimbols = '#@%$&\\"\n';
 	var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + otherSimbols + ' ';
-	abc = "!\"#$%&'()*+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~= ";
+	abc = "!\"#$%&'()*+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyzáéíóúÁÉÍÓÚ{|}~= ";
 				
 	var Sage = {
 		'common': {
@@ -100,7 +100,6 @@
 								numericalKeyXP: '235478',
 								n1iXP: '8',
 								n2iXP: '4',
-								//convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
 							},
 							ll: {
 								inverseLL: true,
@@ -516,7 +515,7 @@
 					var index = nuevoLL.indexOf(buscarletra) + movimientos;
 					if ( nuevoXP[index] == undefined ) {
 						index = index - nuevoLL.length;
-						if( index < 0 ){
+						while( index < 0 ){
 							index+= nuevoLL.length*2;
 						}
 						var indiceIndicativoAplicable = letrasafectadas.indexOf(buscarletra);
@@ -593,7 +592,7 @@
 					var index = nuevoXP.indexOf(buscarletra) + movimientos;
 					if ( nuevoXP[index] == undefined ) {
 						index = index - nuevoXP.length;
-						if( index < 0 ){
+						while( index < 0 ){
 							index+= nuevoXP.length*2;
 						}
 						var letraDesencriptada = nuevoLL[ index ];
