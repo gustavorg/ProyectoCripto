@@ -507,11 +507,11 @@
 				while( textEncrypt.length != plainText.length ){
 					var buscarletra = '';
 					buscarletra = plainText.charAt(indextexto);
-					//if(buscarletra == '\n' ){
-					//	textEncrypt.push(buscarletra);
-					//	indextexto++;
-					//	continue;
-					//}
+					if(buscarletra == '\n' ){
+						textEncrypt.push(buscarletra);
+						indextexto++;
+						continue;
+					}
 					var index = nuevoLL.indexOf(buscarletra) + movimientos;
 					console.log(movimientos, typeof movimientos);
 					if ( nuevoXP[index] == undefined ) {
@@ -588,11 +588,11 @@
 				while( textEncrypt.length != plainText.length ){
 					var buscarletra = '';
 					buscarletra = plainText.charAt(indextexto);
-					//if(buscarletra == '\n' ){
-					//	textEncrypt.push(buscarletra);
-					//	indextexto++;
-					//	continue;
-					//}
+					if(buscarletra == '\n' ){
+						textEncrypt.push(buscarletra);
+						indextexto++;
+						continue;
+					}
 					var index = nuevoXP.indexOf(buscarletra) + movimientos;
 					if ( nuevoXP[index] == undefined ) {
 						index = index - nuevoXP.length;
@@ -638,6 +638,10 @@
 				var plainText = plainText.split('');
 				var textEncrypt = [];
 				for (var i = 0; i < plainText.length; i++) {
+					if(plainText[i] == '\n' ){
+						textEncrypt.push(plainText[i]);
+						continue;
+					}
 					var indexLetter = Sage.utils.getIndexColumn( xp, plainText[i] );
 					if( indexLetter !== -1 ){
 						textEncrypt.push(ll[indexLetter]);
@@ -649,6 +653,10 @@
 				var plainText = plainText.split('');
 				var textDecrypt = [];
 				for (var i = 0; i < plainText.length; i++) {
+					if(plainText[i] == '\n' ){
+						textDecrypt.push(plainText[i]);
+						continue;
+					}
 					var indexLetter = Sage.utils.getIndexColumn( ll, plainText[i] );
 					if( indexLetter !== -1 ){
 						textDecrypt.push(xp[indexLetter]);
