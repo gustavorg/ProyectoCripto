@@ -25,9 +25,27 @@
 			};
 		}
 	});
+	var letters = 'abcdefghijklmnñopqrstuvwxyz';
+	var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+	var numbers = '0123456789';
+	var mathematicalOperators = '=<>+-*/';
+	var punctuationMarks = '.,;:\'()[]{}¿?¡!|_';
+	var otherSimbols = '#@%$&\\"\n';
+	var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + otherSimbols + ' ';
+	abc = "!\"#$%&'()*+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~= ";
+				
 	var Sage = {
 		'common': {
 			init: function() {
+				$.fn.copyme = function() {
+					$('span[id^="success-alert"]').remove();
+					this.select();
+					$(this).focus();
+					document.execCommand("copy");
+					document.getSelection().removeAllRanges();
+					$(this).after('<span id="success-alert"><br>Copied to clipboard</span>');
+					$('#success-alert').css( "color", "green" );
+				};
 				Handlebars.registerHelper('with', function(context, options) {
 					return options.fn(context);
 				});
@@ -48,8 +66,20 @@
 						"%": lvalue % rvalue
 					}[operator];
 				});
+				Sage.utils.abc = abc;
 				if ( localStorage.getItem('user') == null ) {
 					Sage.user.set({"username":"admin","password":"P@@sw0rd"});
+				}
+				if ( !Sage.user.loggedIn() ) {
+					var filename = location.href.split('/').pop()
+					if ( filename != 'login.html' ) {
+						location.href = 'login.html';
+					}
+				} else {
+					var filename = location.href.split('/').pop()
+					if ( filename == 'login.html' ) {
+						location.href = 'index.html';
+					}
 				}
 				if ( localStorage.getItem('settings') == null ) {
 					var contextListaAlgoritmos;
@@ -62,41 +92,6 @@
 							n2iLL: '2',
 						},
 						algoritmos: [{
-							nombre: 'Regleta',
-							tipo: 'regleta',
-							xp: {
-								inverseXP: true,
-								keyWordXP: 'nicoquispe',
-								numericalKeyXP: '235478',
-								n1iXP: '8',
-								n2iXP: '4',
-								//convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
-							},
-							ll: {
-								inverseLL: true,
-								keyWordLL: 'gustavorivero',
-								numericalKeyLL: '235478',
-								n1iLL: '3',
-								n2iLL: '2',
-							},
-							metodos: {
-								tipo: 'gradual',
-								xp: {
-									inverseXP: true,
-									keyWordXP: 'nicoquispe',
-									l1iXP: 'a',
-									l2iXP: 'f',
-									convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
-								},
-								ll: {
-									inverseLL: true,
-									keyWordLL: 'sfdgertegdfgs',
-									numericalKeyLL: '235478',
-									n1iLL: '3',
-									n2iLL: '2',
-								},
-							}
-						},{
 							nombre: 'Gradual',
 							tipo: 'gradual',
 							xp: {
@@ -131,6 +126,41 @@
 									n2iLL: '2',
 								},
 							}
+						}, {
+							nombre: 'Regleta',
+							tipo: 'regleta',
+							xp: {
+								inverseXP: true,
+								keyWordXP: 'nicoquispe',
+								numericalKeyXP: '235478',
+								n1iXP: '8',
+								n2iXP: '4',
+								//convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
+							},
+							ll: {
+								inverseLL: true,
+								keyWordLL: 'gustavorivero',
+								numericalKeyLL: '235478',
+								n1iLL: '3',
+								n2iLL: '2',
+							},
+							metodos: {
+								tipo: 'regleta',
+								xp: {
+									inverseXP: true,
+									keyWordXP: 'nicoquispe',
+									l1iXP: 'a',
+									l2iXP: 'f',
+									convenios: [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}],
+								},
+								ll: {
+									inverseLL: true,
+									keyWordLL: 'sfdgertegdfgs',
+									numericalKeyLL: '235478',
+									n1iLL: '3',
+									n2iLL: '2',
+								},
+							}
 						}]
 					};
 					Sage.configuracion.set(contextListaAlgoritmos);
@@ -141,11 +171,17 @@
 				}
 			},
 			finalize: function() {
-
+				$('.validarSiNumero').keypress( Sage.utils.validarSiNumero );
+				$('.validarSiLetras').keypress( Sage.utils.validarSiLetras );
+				$('.validarSiClaveNumerica').keypress( Sage.utils.validarSiClaveNumerica );
+				$('[href="login.html"]').click( function (e) {
+					localStorage.removeItem('loggedIn');
+				} );
 			}
 		},
 		'login': {
 			init: function() {
+
 				$('#ingresar').submit(function(e){
 					e.preventDefault();
 					var username = $('#username').val();
@@ -159,6 +195,7 @@
 						$('#mensaje').text("El usuario no existe.");	
 					}else if(username == user.username && password == user.password){
 						$('#contenedormensaje').hide();
+						localStorage.setItem('loggedIn', Sage.utils.encriptarSetting( 'true' ));
 						window.location.href = "index.html";
 					}
 				});
@@ -168,18 +205,100 @@
 			}
 		},
 		'utils': {
-			multipleEncriptacion: function (plainText) {
-				var letters = 'abcdefghijklmnñopqrstuvwxyz';
-				var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
-			 	var numbers = '0123456789';
-			 	var mathematicalOperators = '=<>+-*/';
-			 	var punctuationMarks = '.,;:"()[]{}¿?¡!|_';
-			 	var otherSimbols = '#@%&';
-				var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + otherSimbols + ' ';
-				abc = letters + Upperletters;
-				console.log( abc.length );
+			abc: '',
+			validarSiClaveNumerica: function(e) {
+				var ref = $(this).data('clave');
+				var inputclavenumerica = $('#'+ref).val();
+				var key = window.event ? e.keyCode : e.which;
+				var caracter = String.fromCharCode(e.keyCode);
+				if ((48 <= key && key <= 57) || (key == 0) || (key == 8)) {
+					if (inputclavenumerica.search(caracter) != -1) {
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			},
+			validarSiLetras: function(e) {
+				var input = $( this ).val();
+				var key = window.event ? e.keyCode : e.which;
+				if ((65 <= key && key <= 90) || (97 <= key) && (key <= 122)) {
+					return true;
+				} else {
+					alert("No se acepta números ni caracteres especiales");
+					return false;
+				}
+			},
+			validarSiNumero: function( e ) {
+				var input = $(this).val();
+				var key = window.event ? e.keyCode : e.which;
+				var caracter = String.fromCharCode(e.keyCode);
+				if ((48 <= key && key <= 57) || (key == 0) || (key == 8)) {
+					if (input.search(caracter) != -1) {
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					alert("No se acepta letras ni caracteres especiales");
+					return false;
+				}
+			},
+			multipleDesencriptacion: function (plainText) {
 				var settingsBase = Sage.configuracion.contextListaAlgoritmos.base;
-				var abcArray = abc.split('');
+				var abcArray = Sage.utils.abc.split('').concat();
+				var alfabetoDesordenador = Sage.utils.sort(abcArray, settingsBase.keyWordLL, settingsBase.numericalKeyLL, settingsBase.n1iLL, settingsBase.n2iLL);
+				var listXPLL = [];
+				Sage.configuracion.contextListaAlgoritmos.algoritmos.forEach( function ( algoritmo, index ) {
+					if( index == 0 ){
+						listXPLL.push( {
+							tipo: algoritmo.tipo,
+							metodos: algoritmo.metodos,
+							xp: Sage.utils.sort(alfabetoDesordenador, algoritmo.xp.keyWordXP, algoritmo.xp.numericalKeyXP, algoritmo.xp.n1iXP, algoritmo.xp.n2iXP),
+							ll: Sage.utils.sort(alfabetoDesordenador, algoritmo.ll.keyWordLL, algoritmo.ll.numericalKeyLL, algoritmo.ll.n1iLL, algoritmo.ll.n2iLL),
+						} );
+					} else {
+						listXPLL.push( {
+							tipo: algoritmo.tipo,
+							metodos: algoritmo.metodos,
+							xp: Sage.utils.sort(listXPLL[index-1].xp, algoritmo.xp.keyWordXP, algoritmo.xp.numericalKeyXP, algoritmo.xp.n1iXP, algoritmo.xp.n2iXP),
+							ll: Sage.utils.sort(listXPLL[index-1].ll, algoritmo.ll.keyWordLL, algoritmo.ll.numericalKeyLL, algoritmo.ll.n1iLL, algoritmo.ll.n2iLL),
+						} );
+					}
+				} );
+				for (var i = listXPLL.length - 1; i >= 0; i--) {
+					var item = listXPLL[i];
+					if ( item.tipo ==  'gradual' ) {
+						if ( item.metodos.ll.inverseLL ) {
+							item.xp.reverse();
+						}
+						var keyWord = item.metodos.ll.keyWordLL;
+						var numericalKey = item.metodos.ll.numericalKeyLL;
+						var n1i = item.metodos.ll.n1iLL;
+						var n2i = item.metodos.ll.n2iLL;
+						var XP = Sage.utils.sort(item.xp, keyWord, numericalKey, n1i, n2i);
+						var LL = item.ll;
+						plainText = Sage.gradual.decrypt(plainText, XP, LL).join('');
+					}
+					if ( item.tipo ==  'regleta' ) {
+						if ( item.metodos.ll.inverseXP ) {
+							item.xp.reverse();
+						}
+						var keyWord = item.metodos.xp.keyWordXP;
+						var keyWordArray = keyWord.replace(/ /g, '').split('');
+						var XP  = Sage.utils.clearRepeat( keyWordArray.concat( item.xp ) );
+						var LL = item.ll;
+						plainText = Sage.regletas.decrypt(plainText, XP, LL, item.metodos.xp.l1iXP, item.metodos.xp.l2iXP, item.metodos.xp.convenios).join('');
+					}
+					console.log( 'Texto desencriptado: ' + plainText );
+				}
+				return plainText;
+			},
+			multipleEncriptacion: function (plainText) {
+				var settingsBase = Sage.configuracion.contextListaAlgoritmos.base;
+				var abcArray = Sage.utils.abc.split('').concat();
 				var alfabetoDesordenador = Sage.utils.sort(abcArray, settingsBase.keyWordLL, settingsBase.numericalKeyLL, settingsBase.n1iLL, settingsBase.n2iLL);
 				var listXPLL = [];
 				Sage.configuracion.contextListaAlgoritmos.algoritmos.forEach( function ( algoritmo, index ) {
@@ -201,36 +320,33 @@
 				} );
 				listXPLL.forEach( function ( item ) {
 					if ( item.tipo ==  'gradual' ) {
+						if ( item.metodos.ll.inverseLL ) {
+							item.xp.reverse();
+						}
 						var keyWord = item.metodos.ll.keyWordLL;
 						var numericalKey = item.metodos.ll.numericalKeyLL;
 						var n1i = item.metodos.ll.n1iLL;
 						var n2i = item.metodos.ll.n2iLL;
 						var XP = Sage.utils.sort(item.xp, keyWord, numericalKey, n1i, n2i);
 						var LL = item.ll;
-						console.log( plainText );
 						plainText = Sage.gradual.encrypt( plainText , XP, LL).join('');
 					}
 					if ( item.tipo ==  'regleta' ) {
+						if ( item.metodos.ll.inverseXP ) {
+							item.xp.reverse();
+						}
 						var keyWord = item.metodos.xp.keyWordXP;
 						var keyWordArray = keyWord.replace(/ /g, '').split('');
 						var XP  = Sage.utils.clearRepeat( keyWordArray.concat( item.xp ) );
 						var LL = item.ll;
-						console.log( plainText );
 						plainText = Sage.regletas.encrypt( plainText , XP, LL, item.metodos.xp.l1iXP, item.metodos.xp.l2iXP, item.metodos.xp.convenios).join('');
 					}
+					console.log( 'Texto encriptado: ' + plainText );
 				} );
-				console.log( listXPLL );
 				return plainText;
 			},
 			encriptarSetting: function ( plainText ) {
-			 	var letters = 'abcdefghijklmnñopqrstuvwxyz';
-				var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
-			 	var numbers = '0123456789';
-			 	var mathematicalOperators = '=<>+-*/';
-			 	var punctuationMarks = '.,;:\'"()[]{}¿?¡!|_';
-			 	var otherSimbols = '#@%&\\\'"';
-				var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + otherSimbols + ' ';
-				var abcArray = abc.split('');
+			 	var abcArray = Sage.utils.abc.split('').concat();
 				var keyWord = 'ToolsNGCrypt';
 				var alfabetoDesordenador = Sage.utils.sort(abcArray, keyWord, '46327', '3', '4');
 				var XP = Sage.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '2');
@@ -239,14 +355,7 @@
 				return textoEncriptado.join('');
 			},
 			desencriptarSetting: function (plainText) {
-			 	var letters = 'abcdefghijklmnñopqrstuvwxyz';
-				var Upperletters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
-			 	var numbers = '0123456789';
-			 	var mathematicalOperators = '=<>+-*/';
-			 	var punctuationMarks = '.,;:\'"()[]{}¿?¡!|_';
-			 	var otherSimbols = '#@%&\\\'"';
-				var abc = letters + Upperletters + numbers + mathematicalOperators + punctuationMarks + otherSimbols + ' ';
-				var abcArray = abc.split('');
+				var abcArray = Sage.utils.abc.split('').concat();
 				var keyWord = 'ToolsNGCrypt';
 				var alfabetoDesordenador = Sage.utils.sort(abcArray, keyWord, '46327', '3', '4');
 				var XP = Sage.utils.sort(alfabetoDesordenador, keyWord, '46327', '4', '2');
@@ -399,11 +508,11 @@
 				while( textEncrypt.length != plainText.length ){
 					var buscarletra = '';
 					buscarletra = plainText.charAt(indextexto);
-					if(buscarletra == '\n' ){
-						textEncrypt.push(buscarletra);
-						indextexto++;
-						continue;
-					}
+					//if(buscarletra == '\n' ){
+					//	textEncrypt.push(buscarletra);
+					//	indextexto++;
+					//	continue;
+					//}
 					var index = nuevoLL.indexOf(buscarletra) + movimientos;
 					if ( nuevoXP[index] == undefined ) {
 						index = index - nuevoLL.length;
@@ -476,11 +585,11 @@
 				while( textEncrypt.length != plainText.length ){
 					var buscarletra = '';
 					buscarletra = plainText.charAt(indextexto);
-					if(buscarletra == '\n' ){
-						textEncrypt.push(buscarletra);
-						indextexto++;
-						continue;
-					}
+					//if(buscarletra == '\n' ){
+					//	textEncrypt.push(buscarletra);
+					//	indextexto++;
+					//	continue;
+					//}
 					var index = nuevoXP.indexOf(buscarletra) + movimientos;
 					if ( nuevoXP[index] == undefined ) {
 						index = index - nuevoXP.length;
@@ -542,10 +651,20 @@
 				return textDecrypt;
 			}
 		},
+		'encriptar': {
+			init: function () {
+				$('#mensaje').change(function(){
+					$('#cripto').val( Sage.utils.multipleEncriptacion($('#mensaje').val()) );
+				});
+				$('#cripto').click(function(){
+					$('#cripto').copyme();
+				});
+			}
+		},
 		'desencriptar': {
 			init: function () {
 				$('#cripto').change(function(){
-					$('#mensaje').val( Sage.utils.multipleEncriptacion($('#cripto').val()) );
+					$('#mensaje').val( Sage.utils.multipleDesencriptacion($('#cripto').val()) );
 				});
 				$('#mensaje').click(function(){
 					$('#mensaje').copyme();
@@ -979,7 +1098,34 @@
 				} );
 				//$('.btn-add-algoritmo').click();
 			},
+			validateConfiguracionAlfabeto: function () {
+				var _return = false;
+				if ( $('#basenumericalKeyLL').val() == '' ) {
+					_return = true;
+				}
+				if ( $('#basekeyWordLL').val() == '' ) {
+					_return = true;
+				}
+				if ( $('#basen1iLL').val() == '' ) {
+					_return = true;
+				}
+				if ( $('#basen2iLL').val() == '' ) {
+					_return = true;
+				}
+				$('#saveConfiguracionAlfabeto').prop('disabled', _return);
+			},
 			finalize: function() {
+				$('#basenumericalKeyLL').change( this.validateConfiguracionAlfabeto );
+				$('#basekeyWordLL').change( this.validateConfiguracionAlfabeto );
+				$('#basen1iLL').change( this.validateConfiguracionAlfabeto );
+				$('#basen2iLL').change( this.validateConfiguracionAlfabeto );
+				$('#basen2iLL').change();
+				$('#basenumericalKeyLL, #basekeyWordLL').change( function (e) {
+					var input = $(this).val();
+					if (input.length < 4 ){
+						alert('Se requiere 4 caracteres como mínimo.');
+					}
+				} );
 			},
 
 			encrypt: function() {
@@ -1000,10 +1146,18 @@
 
 			},
 			decrypt: function() {
-		
+			
+			},
+			loggedIn: function () {
+				if ( localStorage.getItem('loggedIn') == null ) {
+					return false;
+				}
+				else {
+					return Sage.utils.desencriptarSetting( localStorage.getItem('loggedIn') ) == 'true';
+				}
 			},
 			match: function() {
-		
+				
 			},
 			get: function() {
 				return JSON.parse( Sage.utils.desencriptarSetting( localStorage.getItem('user') ));
@@ -1013,13 +1167,6 @@
 			}
 		}
 	};
-
-	//console.log('----------------------');
-	//var convenioConfig = [{letra:'a',saltos:2,direccion:'izquierda'},{letra:'p',saltos:4,direccion:'derecha'}];
-	//var textoEncriptado2 = Sage.regletas.encrypt('hola', XP, LL, 'a', 'c', convenioConfig );
-	//var textoDesencriptado2 = Sage.regletas.decrypt(textoEncriptado2.join(''), XP, LL, 'a', 'c', convenioConfig); 
-	//console.log(textoEncriptado2);
-	//console.log(textoDesencriptado2);
 
 	var UTIL = {
 		fire: function(func, funcname, args) {

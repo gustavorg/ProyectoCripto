@@ -49,12 +49,11 @@
 										</li>
 										<li class="list-inline-item">
 											<label for="clavenumerica">Clave Numérica</label>
-											<input type="text" name="basenumericalKeyLL" id="basenumericalKeyLL"  minlength="4" maxlength="9" onkeypress="return validarSiNumero(event)"
-											 onchange="caracteres()"  class="form-control">
+											<input type="text" name="basenumericalKeyLL" id="basenumericalKeyLL"  minlength="4" maxlength="10" class="validarSiNumero form-control">
 										</li>
 										<li class="list-inline-item">
 											<label for="ninitdoblea">Palabra Clave</label>
-											<input type="text" name="basekeyWordLL" id="basekeyWordLL" minlength="4" onkeypress="return validarSiLetras(event)"  onchange="caracteres()"  class="form-control">
+											<input type="text" name="basekeyWordLL" id="basekeyWordLL" minlength="4"  class="validarSiLetras form-control">
 										</li>
 									</ul>
 								</div>
@@ -64,14 +63,14 @@
 									<ul class="list-inline text-center list-unstyled">
 										<li class="list-inline-item">
 											<label for="ninitgradual"># Inicial p.g.</label>
-											<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen1iLL" id="basen1iLL" maxlength="1" onkeypress="return validarSiClaveNumerica(event)" class="form-control">
+											<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen1iLL" id="basen1iLL" maxlength="1" data-clave='basenumericalKeyLL' class="validarSiClaveNumerica form-control">
 										</li>
 										<li class="list-inline-item">
 											<label for="ninitdoblea"># Inicial d.a.</label>
-											<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen2iLL" id="basen2iLL" maxlength="1" onkeypress="return validarSiClaveNumerica(event)" class="form-control">
+											<input type="text" style="max-width: 49px; margin: auto; text-align: center; " name="basen2iLL" id="basen2iLL" maxlength="1" data-clave='basenumericalKeyLL' class="validarSiClaveNumerica form-control">
 										</li>
 										<li class="list-inline-item">
-											<button type="button" class="btn btn-primary btn-guardar-base">Guardar</button>
+											<button type="button" id="saveConfiguracionAlfabeto" disabled="disabled" class="btn btn-primary btn-guardar-base">Guardar</button>
 										</li>
 									</ul>
 								</div>
@@ -349,63 +348,6 @@
 	<script type="text/javascript" src='js/jquery-3.2.1.min.js'></script>
 	<script type="text/javascript" src='js/bootstrap.min.js'></script>
 	<script type="text/javascript" src='js/main.js'></script>
-	<script>
-		function validarSiNumero(e) {
-			var input = $('#basenumericalKeyLL').val();
-			var key = window.event ? e.keyCode : e.which;
-			var caracter = String.fromCharCode(e.keyCode);
-
-			if ((48 <= key && key <= 57) || (key == 0) || (key == 8)) {
-				if (input.search(caracter) != -1) {
-					return false;
-				} else {
-					return true;
-				}
-			} else {
-				alert("No se acepta letras ni caracteres especiales");
-				return false;
-
-			}
-		}
-		function caracteres() {
-			var input = $('#basenumericalKeyLL').val();
-			var input2 = $('#basekeyWordLL').val();
-			if (input.length < 4 || input2.length < 4) {
-				alert('Se requiere 4 caracteres como mínimo.');
-				$('#save').attr('disabled', 'disabled');
-			} else {
-				$('#save').removeAttr('disabled');;
-			}
-		}
-
-		function validarSiLetras(e) {
-			var input = $('#basekeyWordLL').val();
-			var key = window.event ? e.keyCode : e.which;
-
-			if ((65 <= key && key <= 90) || (97 <= key) && (key <= 122)) {
-				return true;
-			} else {
-				alert("No se acepta números ni caracteres especiales");
-				return false;
-			}
-		}
-
-		function validarSiClaveNumerica(e) {
-			var inputclavenumerica = $('#basenumericalKeyLL').val();
-			var key = window.event ? e.keyCode : e.which;
-			var caracter = String.fromCharCode(e.keyCode);
-
-			if ((48 <= key && key <= 57) || (key == 0) || (key == 8)) {
-				if (inputclavenumerica.search(caracter) != -1) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-	</script>
 </body>
 
 </html>
